@@ -13,10 +13,8 @@ public class MainView {
             int option = sc.nextInt();
     
             switch (option) {
-                case 1:
-                    return 1;
-                case 2:
-                    return 2;
+                case 1,2:
+                    return option;
                 case 3:
                     System.out.println("Thank You! Visit Again!\n");
                     return 3;

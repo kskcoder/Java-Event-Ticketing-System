@@ -63,8 +63,19 @@ public class LoginAndSignUpView {
         return sc.next();
     }
 
-    public void userSuccessfullyLoggedIn() {
-        System.out.println("User successfully logged in!");
+    public void userSuccessfulMessage(boolean loggedIN) {
+        System.out.println();
+        if (loggedIN) {
+            System.out.println("User successfully logged in!");
+        } else {
+            System.out.println("User successfully created!");
+        }        
+    }
+
+    public void userLoggedOutMessage() {
+        System.out.println();
+        System.out.println("User logged out successfully!");
+        System.out.println();
     }
 
 }

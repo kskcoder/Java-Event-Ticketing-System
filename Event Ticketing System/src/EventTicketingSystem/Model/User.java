@@ -30,6 +30,10 @@ public class User {
         return this.password;
     }
 
+    public boolean isAdmin() {
+        return this.isAdmin;
+    }
+
     @Override
     public String toString() {
         return "Username: "+this.username;

@@ -19,17 +19,19 @@ public class MainViewModel {
     }
     
     public static void showMainMenu() {
-        switch (mainView.showMainMenu()) {
-            case 1:
-                handleLogin();
-                break;
-
-            case 2:
-                handleSignup();
-                break;
-                
-            case 3:
-                break;
+        while(true) {
+            switch (mainView.showMainMenu()) {
+                case 1:
+                    handleLogin();
+                    break;
+    
+                case 2:
+                    handleSignup();
+                    break;
+                    
+                case 3:
+                    return;
+            }
         }
     }
 
@@ -47,7 +49,6 @@ public class MainViewModel {
             isAuthenticated = userManager.authenticateUser(username, password);
         } else {
             loginAndSignUpView.userDoesNotExist();
-            showMainMenu();
             return;
         }
 
@@ -70,7 +71,6 @@ public class MainViewModel {
                 }
             }            
         }
-        showMainMenu();
         return;
     }
 
@@ -95,11 +95,8 @@ public class MainViewModel {
         if (!isUsernameTaken) {
             password = loginAndSignUpView.acceptPassword();
             userManager.addNewUser(new User(username, password, isAdmin));               
-            loginAndSignUpView.userSuccessfulMessage(false);   
-            showAfterLoginViews();  
-        }
-
-        showMainMenu();
+            loginAndSignUpView.userSuccessfulMessage(false);                 
+        }        
         return;
     }
 
@@ -111,9 +108,9 @@ public class MainViewModel {
                 case 3:
                     userManager.logOutUser();
                     loginAndSignUpView.userLoggedOutMessage();
-                    showMainMenu();
             }
         }  
+        return;
     }
 
     public static void main(String args[]) {

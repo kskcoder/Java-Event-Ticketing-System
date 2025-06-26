@@ -24,6 +24,7 @@ public class UserManager {
 
     public void addNewUser(User user) {
         this.users.add(user);
+        return;
     }
 
     public List<User> getAllUsers() {
@@ -38,6 +39,7 @@ public class UserManager {
 
     public void setCurrentUser(User user) {
         currentLoggedInUser = user;
+        return;
     }
 
     public User getLoggedInUser() {
@@ -47,13 +49,14 @@ public class UserManager {
     //Admin related management
 
     public void createDefaultAdmin() {
-        addNewUser(new User("Admin", "0000", true));
+        addNewUser(new User("Admin", "0000", true));        
     }
 
     //Log Out User
 
     public void logOutUser() {
         setCurrentUser(null);
+        return;
     }
 
 }

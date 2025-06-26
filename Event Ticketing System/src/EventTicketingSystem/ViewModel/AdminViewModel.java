@@ -16,8 +16,8 @@ public class AdminViewModel {
 
     public AdminViewModel(UserManager userManager) {
         this.userManager = userManager;
-        this.adminViews = new AdminViews();
-        this.loginAndSignUpView = new LoginAndSignUpView();
+        adminViews = new AdminViews();
+        loginAndSignUpView = new LoginAndSignUpView();
     }
 
     public void showAdminFlow() {

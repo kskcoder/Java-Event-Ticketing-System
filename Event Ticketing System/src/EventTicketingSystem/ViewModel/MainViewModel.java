@@ -5,13 +5,15 @@ import EventTicketingSystem.View.UserViews;
 import EventTicketingSystem.View.LoginAndSignUpView;
 import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.UserManager;
+import EventTicketingSystem.Model.EventManager;
 
 public class MainViewModel {
     private static MainView mainView = new MainView();    
     private static UserViews userViews = new UserViews();
     private static LoginAndSignUpView loginAndSignUpView = new LoginAndSignUpView();
     private static final UserManager userManager = new UserManager();
-    private static AdminViewModel adminViewModel = new AdminViewModel(userManager);
+    private static final EventManager eventManager = new EventManager();
+    private static AdminViewModel adminViewModel = new AdminViewModel(userManager, eventManager);
 
     public static void start() {
         userManager.createDefaultAdmin();
@@ -65,7 +67,8 @@ public class MainViewModel {
                 } else if (isAuthenticated == 1) {
                     System.out.println();      
                     loginAndSignUpView.userSuccessfulMessage(true);  
-                    userManager.setCurrentUser(existingUser);   
+                    User newUser = userManager.getUserByUsername(username);
+                    if (newUser != null) userManager.setCurrentUser(newUser);   
                     showAfterLoginViews();           
                     break;
                 }

@@ -19,8 +19,8 @@ public class EventManager {
     public boolean validateNewEvent(Event event) {
         if (event.name != null 
         && event.date != null 
-        && event.price <= 0
-        && event.totalTickets <= 0
+        && event.price > 0
+        && event.totalTickets > 0
         && event.venue != null) {
             return true;
         } else {

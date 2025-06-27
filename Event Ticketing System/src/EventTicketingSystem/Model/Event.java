@@ -1,19 +1,23 @@
 package EventTicketingSystem.Model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Event {
     protected int id;
+    private static int idCounter = 1;
     protected String name;    
     protected String venue;
-    protected Date date;
+    protected LocalDateTime date;
     protected int price;
     protected int totalTickets;
     protected int ticketsAvailable;    
     protected EventStatus status;
 
-    public Event(int id, String name, String venue, Date date, int price, int totalTickets, int ticketsAvailable, EventStatus status) {
-        this.id = id;
+    DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    public Event(String name, String venue, LocalDateTime date, int price, int totalTickets, int ticketsAvailable, EventStatus status) {
+        this.id = idCounter++;
         this.name = name;
         this.venue = venue;
         this.date = date;
@@ -41,7 +45,7 @@ public class Event {
         this.venue = venue;
     }
 
-    public void setEventDate(Date date) {
+    public void setEventDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -58,7 +62,7 @@ public class Event {
         return "Event Details: \nId: "+this.id
         +"\nName: "+this.name
         +"\nVenue: "+this.venue
-        +"\nDate: "+this.date
+        +"\nDate: "+this.date.format(dateTimeFormat)
         +"\nPrice: "+this.price
         +"\nTotal Tickets: "+this.totalTickets
         +"\nTickets Available: "+this.ticketsAvailable

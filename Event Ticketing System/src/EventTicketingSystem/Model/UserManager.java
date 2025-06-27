@@ -1,6 +1,7 @@
 package EventTicketingSystem.Model;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import EventTicketingSystem.Helpers.AppConstants;
 
@@ -20,6 +21,10 @@ public class UserManager {
             }
         }
         return AppConstants.AUTH_FAILURE;
+    }
+
+    public User getUserByUsername(String username) {
+        return users.stream().filter(user -> user.getUserName().equals(username)).findAny().orElse(null);
     }
 
     public void addNewUser(User user) {
@@ -49,7 +54,7 @@ public class UserManager {
     //Admin related management
 
     public void createDefaultAdmin() {
-        addNewUser(new User("Admin", "0000", true));        
+        addNewUser(new Admin("Admin", "0000", true));        
     }
 
     //Log Out User

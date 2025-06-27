@@ -2,20 +2,23 @@ package EventTicketingSystem.ViewModel;
 
 import java.util.*;
 import EventTicketingSystem.Model.Admin;
-import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.UserManager;
+import EventTicketingSystem.Model.Event;
+import EventTicketingSystem.Model.EventManager;
 import EventTicketingSystem.View.AdminViews;
 import EventTicketingSystem.View.LoginAndSignUpView;;
 
 public class AdminViewModel {
     UserManager userManager;
+    EventManager eventManager;
     private static AdminViews adminViews;
     private static LoginAndSignUpView loginAndSignUpView;
 
     Scanner sc = new Scanner(System.in);
 
-    public AdminViewModel(UserManager userManager) {
+    public AdminViewModel(UserManager userManager, EventManager eventManager) {
         this.userManager = userManager;
+        this.eventManager = eventManager;
         adminViews = new AdminViews();
         loginAndSignUpView = new LoginAndSignUpView();
     }
@@ -27,6 +30,8 @@ public class AdminViewModel {
                     createNewAdmin();
                     break;
                 case 2:
+                    showEventManagementMenu();
+                    break;
                 case 3:
                 case 4:
                 case 5:
@@ -56,9 +61,32 @@ public class AdminViewModel {
 
         if (!isUsernameTaken) {
             password = loginAndSignUpView.acceptPassword();
-            userManager.addNewUser(new User(username, password, isAdmin));               
+            userManager.addNewUser(new Admin(username, password, isAdmin));               
             loginAndSignUpView.userSuccessfulMessage(false);   
         }
         return;
     }
+
+    public void showEventManagementMenu() {
+        while (true) {
+            switch (adminViews.showEventManagementMenu()) {
+                case 1:
+                    Event newEvent = adminViews.createNewEvent();
+                    boolean validEvent = eventManager.validateNewEvent(newEvent);
+                    boolean exists = eventManager.eventExistsAlready(newEvent);
+
+                    if (exists) adminViews.eventExistsMessage();
+                    
+                    while (!validEvent && !exists) {
+                        newEvent = adminViews.createNewEvent();
+                        if (exists) adminViews.eventExistsMessage();
+                        validEvent = eventManager.validateNewEvent(newEvent);
+                    }
+                    adminViews.eventAddedSuccessfullyMessage();
+                    break;
+            }
+        }
+    }
+
+
 }

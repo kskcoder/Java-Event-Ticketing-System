@@ -1,6 +1,11 @@
 package EventTicketingSystem.View;
 
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import EventTicketingSystem.Model.Event;
+import EventTicketingSystem.Model.Event.EventStatus;
 
 public class AdminViews {
     Scanner sc = new Scanner(System.in);
@@ -30,7 +35,8 @@ public class AdminViews {
 
     public int showEventManagementMenu() {
         while (true) {
-            System.out.println("\n Select an option to continue: \n1. Create Event \n2. View Events Menu \n3. Update Event Menu \n4. Delete Event \n5. Exit");
+            System.out.println("\nSelect an option to continue: \n1. Create Event \n2. View Events Menu \n3. Update Event Menu \n4. Delete Event \n5. Exit\n");
+            System.out.print("Enter Choice: ");
 
             int option = sc.nextInt();
     
@@ -80,6 +86,78 @@ public class AdminViews {
                     System.out.println();
             }
         }
+    }
+
+    public Event createNewEvent() {        
+        sc.nextLine(); 
+        System.out.println();
+        System.out.print("Enter Event Name: ");
+        String eventName = sc.nextLine();
+
+        System.out.print("Enter Event Venue: ");
+        String eventVenue = sc.nextLine();
+        
+        LocalDateTime dateTime = null;
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        while (dateTime == null) {
+            System.out.print("Enter Event Date(dd/MM/yyyy HH:mm): ");
+            String input = sc.nextLine();
+            try {
+                dateTime = LocalDateTime.parse(input, dateFormat);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid format please enter again!");
+                System.out.println();
+            }
+        }
+
+        System.out.print("Enter Event price: ");
+        int setEventPrice = sc.nextInt();
+
+        System.out.print("Enter Event Tickets: ");
+        int eventTotalTickets = sc.nextInt();
+
+        System.out.print("Enter Event Tickets Available: ");
+        int eventTotalTicketsAvailable = sc.nextInt();
+
+        System.out.print("Enter Event Status: ");
+        Event.EventStatus eventStatus = null;
+
+        while (eventStatus == null) {
+            System.out.println("Select Event Status: \n1. Upcoming \n2. Cancelled \n3. Completed \n4. Postponed");
+            System.out.print("Enter choice: ");
+            int input = sc.nextInt();
+            switch (input) {
+                case 1:
+                    eventStatus = EventStatus.UPCOMING;
+                    break;
+                case 2:
+                    eventStatus = EventStatus.CANCELLED;
+                    break;
+                case 3:
+                    eventStatus = EventStatus.COMPLETED;
+                    break;
+                case 4:
+                    eventStatus = EventStatus.POSTPONED;
+                    break;
+                default:
+                    System.out.println("Invalid status please enter Valid choice");
+            }
+        }
+
+        return new Event(eventName, eventVenue, dateTime, setEventPrice, eventTotalTickets, eventTotalTicketsAvailable, eventStatus);
+    }
+
+    public void eventAddedSuccessfullyMessage() {
+        System.out.println();
+        System.out.println("Event Added Successfully!");
+        System.out.println();
+    }
+
+    public void eventExistsMessage() {
+        System.out.println();
+        System.out.println("Event Already Exists!");
+        System.out.println();
     }
 }
 

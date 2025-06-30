@@ -82,11 +82,33 @@ public class AdminViewModel {
                         if (exists) adminViews.eventExistsMessage();
                         validEvent = eventManager.validateNewEvent(newEvent);
                     }
+                    eventManager.addEvent(newEvent);
                     adminViews.eventAddedSuccessfullyMessage();
                     break;
+                case 2:
+                    while(true) {
+                        int choice = adminViews.viewEventMenu();
+                        if (choice == 7) {
+                            break;
+                        } else {
+                            showEventsControl(choice);
+                        }                    
+                    }
+                    break;
+                case 5:
+                    return;
             }
         }
     }
 
+    public void showEventsControl(int choice) {
+        switch (choice) {
+            case 1:
+                int price = adminViews.viewEventsUnderPrice();
+                List<Event> events = eventManager.getEventsUnderPrice(price);
+                adminViews.showEventsList(events);
+                return;
+        }
+    }
 
 }

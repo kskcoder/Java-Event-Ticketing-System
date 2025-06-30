@@ -1,6 +1,7 @@
 package EventTicketingSystem.Model;
 
 import java.util.*;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 public class EventManager {
@@ -50,12 +51,12 @@ public class EventManager {
         .collect(Collectors.toList()));
     }    
 
-    public List<Event> getEventsByDate(Date date) {
-        return events.stream().filter(event -> event.date.equals(date)).collect(Collectors.toList());
+    public List<Event> getEventsByDate(LocalDateTime date) {
+        return new ArrayList<>(events.stream().filter(event -> event.date.equals(date)).collect(Collectors.toList()));
     }
 
     public List<Event> getEventsUnderPrice(int price) {
-        return events.stream().filter(event -> event.price <= price).collect(Collectors.toList());
+        return new ArrayList<>(this.events.stream().filter(event -> event.price <= price).collect(Collectors.toList()));
     }
 
     //Delete Event
@@ -84,7 +85,7 @@ public class EventManager {
         }
     }
 
-    public void updateEventDate(int id, Date date) {
+    public void updateEventDate(int id, LocalDateTime date) {
         Event event = getEventById(id);
 
         if (event != null) {

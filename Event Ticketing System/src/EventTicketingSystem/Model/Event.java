@@ -66,7 +66,7 @@ public class Event {
         +"\nPrice: "+this.price
         +"\nTotal Tickets: "+this.totalTickets
         +"\nTickets Available: "+this.ticketsAvailable
-        +"\nStatus: "+this.status.toString();
+        +"\nStatus: "+this.status.toString()+"\n";
     }
 
     @Override

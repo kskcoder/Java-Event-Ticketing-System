@@ -2,7 +2,10 @@ package EventTicketingSystem.Model;
 
 import java.util.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
+
+import EventTicketingSystem.Model.Event.EventStatus;
 
 public class EventManager {
     private List<Event> events = new ArrayList<Event>();
@@ -59,6 +62,10 @@ public class EventManager {
         return new ArrayList<>(this.events.stream().filter(event -> event.price <= price).collect(Collectors.toList()));
     }
 
+    public int getTotalEventsCount() {
+        return this.events.size();
+    }
+
     //Delete Event
     public void deleteEventById(int id) {
         events.remove(events.stream()
@@ -109,5 +116,27 @@ public class EventManager {
         }
     }
 
+    //Create temp events
+
+    public void seedData() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        addEvent(new Event("Diwali Pahat", "Mumbai", LocalDateTime.parse("22/11/2024 06:00", dateTimeFormatter), 500, 200, 200, EventStatus.UPCOMING));
+        addEvent(new Event("Christmas Concert", "Pune", LocalDateTime.parse("25/12/2024 19:00", dateTimeFormatter), 800, 300, 250, EventStatus.UPCOMING));
+        addEvent(new Event("Ganesh Utsav", "Nagpur", LocalDateTime.parse("02/09/2023 10:00", dateTimeFormatter), 300, 150, 0, EventStatus.COMPLETED));
+        addEvent(new Event("New Year Bash", "Goa", LocalDateTime.parse("31/12/2024 23:59", dateTimeFormatter), 1500, 500, 450, EventStatus.UPCOMING));
+        addEvent(new Event("Food Festival", "Mumbai", LocalDateTime.parse("15/01/2024 12:00", dateTimeFormatter), 200, 400, 390, EventStatus.UPCOMING));
+        addEvent(new Event("Marathon", "Pune", LocalDateTime.parse("10/02/2024 05:30", dateTimeFormatter), 100, 1000, 990, EventStatus.UPCOMING));
+        addEvent(new Event("Stand-Up Comedy", "Delhi", LocalDateTime.parse("05/03/2024 20:00", dateTimeFormatter), 700, 250, 245, EventStatus.UPCOMING));
+        addEvent(new Event("Tech Conference", "Bengaluru", LocalDateTime.parse("20/07/2024 09:00", dateTimeFormatter), 1200, 800, 780, EventStatus.UPCOMING));
+        addEvent(new Event("Classical Music Night", "Chennai", LocalDateTime.parse("18/09/2023 18:00", dateTimeFormatter), 400, 300, 0, EventStatus.COMPLETED));
+        addEvent(new Event("Dandiya Night", "Ahmedabad", LocalDateTime.parse("24/10/2024 21:00", dateTimeFormatter), 600, 500, 500, EventStatus.UPCOMING));
+        addEvent(new Event("Art Exhibition", "Kolkata", LocalDateTime.parse("12/11/2024 11:00", dateTimeFormatter), 100, 200, 190, EventStatus.UPCOMING));
+        addEvent(new Event("Yoga Workshop", "Hyderabad", LocalDateTime.parse("18/09/2023 18:00", dateTimeFormatter), 50, 150, 0, EventStatus.CANCELLED));
+        addEvent(new Event("Book Fair", "Mumbai", LocalDateTime.parse("05/12/2024 10:00", dateTimeFormatter), 20, 1000, 985, EventStatus.UPCOMING));
+        addEvent(new Event("Rock Concert", "Goa", LocalDateTime.parse("15/01/2025 20:00", dateTimeFormatter), 2000, 800, 780, EventStatus.UPCOMING));
+        addEvent(new Event("Drama Festival", "Jaipur", LocalDateTime.parse("18/09/2023 18:00", dateTimeFormatter), 300, 400, 380, EventStatus.POSTPONED));
+        
+    }
 
 }

@@ -49,7 +49,7 @@ public class AdminViews{
     //Show Events Menu
     public int viewEventMenu() {
         while(true) {
-            System.out.println("\nSelect an option to continue: \n1. View Events by Under Price \n2. View All Events \n3. View Events by Name \n4. View Events by Id \n5. View Events by Status \n6. View Events by Date \n7. Exit \n");            
+            System.out.println("\nSelect an option to continue: \n1. View All Events \n2. View Events under Price \n3. View Events by Name \n4. View Events by Id \n5. View Events by Status \n6. View Events by Date \n7. Exit \n");            
             int option = InputHelper.getInt("Enter Choice: ");
             System.out.println();
     
@@ -65,20 +65,83 @@ public class AdminViews{
 
     public int viewEventsUnderPrice() {
         System.out.println();
-        InputHelper.clearInput();
         int price = InputHelper.getInt("Enter price(in Rupees): ");
         return price;
     }
 
-    public void showEventsList(List<Event> events) {
+    public String viewEventsByName() {
+        System.out.println();
+        String name = InputHelper.getNonEmptyString("Enter name: ");
+        return name;
+    }
+
+    public int viewEventsById() {
+        System.out.println();
+        int id = InputHelper.getInt("Enter Id: ");
+        return id;
+    }
+
+    public EventStatus viewEventsByStatus() {
+        System.out.println();
+        System.out.print("Enter Event Status: ");
+        Event.EventStatus eventStatus = null;
+
+        while (eventStatus == null) {
+            System.out.println("Select Event Status: \n1. Upcoming \n2. Cancelled \n3. Completed \n4. Postponed");
+            int input = InputHelper.getInt("Enter choice: ");
+            switch (input) {
+                case 1:
+                    return EventStatus.UPCOMING;
+                case 2:
+                    return EventStatus.CANCELLED;
+                case 3:
+                    return EventStatus.COMPLETED;
+                case 4:
+                    return EventStatus.POSTPONED;
+                default:
+                    System.out.println("Invalid status please enter Valid choice");
+            }
+        }
+        return EventStatus.UPCOMING;
+    }
+
+    public LocalDateTime viewEventsByDate() {
+        LocalDateTime dateTime = null;
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        
+        while (dateTime == null) {            
+            String input = InputHelper.getNonEmptyString("Enter Event Date(dd/MM/yyyy HH:mm): ");
+            try {
+                dateTime = LocalDateTime.parse(input, dateFormat);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format! Please enter again");
+            }
+        }
+
+        return dateTime;
+    }
+
+    public void showSingleEvent(Event event, int totalEvents) {
+        System.out.println("Following are the results:");
+        System.out.println();
+
+        System.out.println(event);
+        System.out.println("Showing 1 out of total "+totalEvents+" events.");
+        return;
+    }
+
+    public void showEventsList(List<Event> events, int totalEvents) {
         System.out.println("Following are the results:");
         System.out.println();
 
         for (Event event: events) {
             System.out.println(event);
         }
+        System.out.println("Showing "+events.size()+" out of total "+totalEvents+" events.");
         return;
     }
+
+    //Update event functions
 
     public int updateEventMenu() {
         while(true) {
@@ -87,10 +150,8 @@ public class AdminViews{
             int option = InputHelper.getInt("Enter Choice: ");
     
             switch (option) {
-                case 1,2,3,4,5:
+                case 1,2,3,4,5,6:
                     return option;
-                case 6:
-                    break;
                 default:
                     System.out.println("Please enter a valid choice!");
                     System.out.println();
@@ -98,8 +159,68 @@ public class AdminViews{
         }
     }
 
+    public int getEventId() {
+        return InputHelper.getInt("Enter Event Id: ");
+    }
+
+    public String getEventNameToUpdate() {
+        return InputHelper.getNonEmptyString("Enter new name for event: ");
+    }
+
+    public String getEventVenueToUpdate() {
+        return InputHelper.getNonEmptyString("Enter new venue for event: ");
+    }
+
+    public LocalDateTime getEventDateToUpdate() {
+        LocalDateTime dateTime = null;
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        while (dateTime == null) {
+            String input = InputHelper.getNonEmptyString("Enter new date for event(dd/MM/yyyy HH:mm): ");
+            try {
+                dateTime = LocalDateTime.parse(input, dateFormat);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid format! Please enter again");
+            }
+        }
+        return dateTime;
+    }
+
+    public int getEventPriceToUpdate() {
+        return InputHelper.getInt("Enter new price for event(in Rupees): ");
+    }
+
+    public Event.EventStatus getEventStatusToUpdate() {
+        Event.EventStatus eventStatus = null;
+
+        while (eventStatus == null) {
+            System.out.println("Select New Status for the event: \n1. Upcoming \n2. Cancelled \n3. Completed \n4. Postponed");
+            int input = InputHelper.getInt("Enter choice: ");
+            switch (input) {
+                case 1:
+                    eventStatus = EventStatus.UPCOMING;
+                    break;
+                case 2:
+                    eventStatus = EventStatus.CANCELLED;
+                    break;
+                case 3:
+                    eventStatus = EventStatus.COMPLETED;
+                    break;
+                case 4:
+                    eventStatus = EventStatus.POSTPONED;
+                    break;
+                default:
+                    System.out.println("Invalid status please enter Valid choice");
+            }
+        }
+        return eventStatus;
+    }
+
+    public void showUpdatedMessage() {
+        System.out.println("Event updated successfull! \nUpdated Event below: ");
+    }
+
+    //Create Event
     public Event createNewEvent() {        
-        InputHelper.clearInput();
         System.out.println();
         String eventName = InputHelper.getNonEmptyString("Enter Event Name: ");
 
@@ -113,8 +234,7 @@ public class AdminViews{
             try {
                 dateTime = LocalDateTime.parse(input, dateFormat);
             } catch (DateTimeParseException e) {
-                System.out.println("Invalid format please enter again!");
-                System.out.println();
+                System.out.println("Invalid format! Please enter again");
             }
         }
 

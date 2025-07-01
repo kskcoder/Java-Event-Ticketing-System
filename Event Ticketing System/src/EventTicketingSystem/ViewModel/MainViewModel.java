@@ -17,6 +17,7 @@ public class MainViewModel {
 
     public static void start() {
         userManager.createDefaultAdmin();
+        eventManager.seedData();
         showMainMenu();
     }
     

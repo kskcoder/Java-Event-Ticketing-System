@@ -2,10 +2,10 @@ package EventTicketingSystem.View;
 
 import java.util.*;
 
-public class UserViews {
+public class UserViews extends EventBaseViews{
     Scanner sc = new Scanner(System.in);
     
-    public int showUserMenu() {
+    public int showMainMenu() {
         while (true) {
             System.out.println("\n\nSelect an option to continue: \n\n1. Browse Events \n2. Show Booked Tickets \n3. Log Out \n");
             System.out.print("Enter Choice: ");
@@ -21,4 +21,11 @@ public class UserViews {
             }
         }
     }
+
+    public void userLoggedOutMessage() {
+        System.out.println();
+        System.out.println("User logged out successfully!");
+        System.out.println();
+        return;
+    }    
 }

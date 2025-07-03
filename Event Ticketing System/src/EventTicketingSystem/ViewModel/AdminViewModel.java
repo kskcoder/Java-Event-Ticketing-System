@@ -26,7 +26,7 @@ public class AdminViewModel {
 
     public void showAdminFlow() {
         while (true) {
-            switch (adminViews.showAdminMenu()) {
+            switch (adminViews.showMainMenu()) {
                 case 1:
                     createNewAdmin();
                     break;
@@ -34,6 +34,7 @@ public class AdminViewModel {
                     showEventManagementMenu();
                     break;
                 case 3:
+
                 case 4:
                 case 5:
                     userManager.logOutUser();
@@ -106,6 +107,19 @@ public class AdminViewModel {
                         }   
                     }
                     break;
+                case 4:
+                    while (true) {
+                        int id = adminViews.viewEventsById();
+                        Event event = eventManager.getEventById(id);
+
+                        if (event != null) {
+                            eventManager.deleteEventById(id);
+                            adminViews.deletedSuccessfully();
+                            break;
+                        } else {
+                            adminViews.noEventFound();
+                        }
+                    }
                 case 5:
                     return;
             }

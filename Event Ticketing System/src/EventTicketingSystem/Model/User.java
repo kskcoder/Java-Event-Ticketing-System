@@ -1,12 +1,14 @@
 package EventTicketingSystem.Model;
 
+import EventTicketingSystem.Model.Ticket;
+
 import java.util.*;
 
 public class User {
     protected String username;
     protected String password;
     protected boolean isAdmin;
-    // protected List<Ticket> tickets = new ArrayList<Ticket>();
+    protected List<Ticket> tickets = new ArrayList<Ticket>();
 
     public User(String username, String password, boolean isAdmin) {
         this.username = username;

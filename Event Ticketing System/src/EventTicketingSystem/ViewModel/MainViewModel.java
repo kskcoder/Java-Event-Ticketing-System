@@ -14,6 +14,7 @@ public class MainViewModel {
     private static final UserManager userManager = new UserManager();
     private static final EventManager eventManager = new EventManager();
     private static AdminViewModel adminViewModel = new AdminViewModel(userManager, eventManager);
+    private static UserViewModel userViewModel = new UserViewModel(userManager, userViews);
 
     public static void start() {
         userManager.createDefaultAdmin();
@@ -108,11 +109,7 @@ public class MainViewModel {
         if (userManager.getLoggedInUser().isAdmin()) {
             adminViewModel.showAdminFlow(); 
         } else {
-            switch (userViews.showUserMenu()) {
-                case 3:
-                    userManager.logOutUser();
-                    loginAndSignUpView.userLoggedOutMessage();
-            }
+            userViewModel.showUserFlow();
         }  
         return;
     }

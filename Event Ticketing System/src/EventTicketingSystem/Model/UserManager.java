@@ -1,7 +1,6 @@
 package EventTicketingSystem.Model;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import EventTicketingSystem.Helpers.AppConstants;
 

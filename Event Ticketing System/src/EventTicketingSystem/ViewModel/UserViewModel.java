@@ -1,30 +1,35 @@
 package EventTicketingSystem.ViewModel;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import EventTicketingSystem.Model.Event;
+import EventTicketingSystem.Model.Ticket;
 import EventTicketingSystem.Model.UserManager;
+import EventTicketingSystem.Model.EventManager;
 import EventTicketingSystem.View.UserViews;
 
 public class UserViewModel {
     UserManager userManager;
     UserViews userViews;
+    EventManager eventManager;
 
-    public UserViewModel(UserManager userManager, UserViews userViews) {
+    public UserViewModel(UserManager userManager, UserViews userViews, EventManager eventManager) {
         this.userManager = userManager;
         this.userViews = userViews;
+        this.eventManager = eventManager;
     }
 
     public void showUserFlow() {
         while (true) {
             switch (userViews.showMainMenu()) {
                 case 1:
-                    // createNewAdmin();
+                    showEventsControl(userViews.viewEventMenu());
                     break;
                 case 2:
-                    // showEventMenu();
+                    userViews.showTicketsList(userManager.getAllUserBookedEvents(), userManager.getUserTicketsCount());
                     break;
                 case 3:
-
-                case 4:
-                case 5:
                     userManager.logOutUser();
                     userViews.userLoggedOutMessage();
                     return;
@@ -32,4 +37,82 @@ public class UserViewModel {
         }
     }
 
+        public void showEventsControl(int choice) {
+        switch (choice) {
+            case 1: {
+                List<Event> events = eventManager.getAllEvents();
+                userViews.showEventsList(events, events.size());
+                showBookingOptionControl();
+                break;
+            }
+            case 2: {
+                int price = userViews.viewEventsUnderPrice();
+                List<Event> events = eventManager.getEventsUnderPrice(price);
+                userViews.showEventsList(events, eventManager.getTotalEventsCount());
+                showBookingOptionControl();
+                break;
+            }
+            case 3: {
+                String name = userViews.viewEventsByName();
+                Event event = eventManager.getEventByName(name);
+                userViews.showSingleEvent(event, eventManager.getTotalEventsCount());
+                showBookingOptionControl();
+                break;
+            }
+            case 4: {
+                int id = userViews.viewEventsById();
+                Event event = eventManager.getEventById(id);
+                userViews.showSingleEvent(event, eventManager.getTotalEventsCount());
+                showBookingOptionControl();
+                break;
+            }
+            case 5: {
+                Event.EventStatus status = userViews.viewEventsByStatus();
+                List<Event> events = eventManager.getEventByStatus(status);
+                userViews.showEventsList(events, eventManager.getTotalEventsCount());
+                showBookingOptionControl();
+                break;
+            }
+            case 6: {
+                LocalDateTime date = userViews.viewEventsByDate();
+                List<Event> events = eventManager.getEventsByDate(date);
+                userViews.showEventsList(events, eventManager.getTotalEventsCount());
+                showBookingOptionControl();
+                break;
+            }          
+        }
+    }
+    
+    public int inputEventId() {
+        int Id = userViews.getEventId();
+        while (Id != -1 && eventManager.getEventById(Id) == null) {
+            userViews.noEventFound();
+            Id = userViews.getEventId();
+        }
+        return Id;
+    }
+
+    public void showBookingOptionControl() {
+        int Id = inputEventId();
+
+        if (Id != -1) {
+            Event event = eventManager.getEventById(Id);
+            
+            if (event.getQuantity() <= 0 || event.getStatus() == Event.EventStatus.CANCELLED) {
+                userViews.cannotBookTickets();
+                return;
+            }
+            userViews.showSingleEvent(event, eventManager.getTotalEventsCount());
+
+            int quantity = userViews.getQuantity(event.getQuantity(), false);
+
+            while (event.getQuantity() < quantity) {
+                quantity = userViews.getQuantity(event.getQuantity(), true);
+            }
+
+            userManager.attachTicketToUser(new Ticket(userManager.getLoggedInUser(), event, quantity));
+            userViews.eventBookedSuccessfullyMessage();            
+        }
+        return;
+    }
 }

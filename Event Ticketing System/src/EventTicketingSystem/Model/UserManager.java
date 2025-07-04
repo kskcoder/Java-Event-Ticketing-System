@@ -3,6 +3,7 @@ package EventTicketingSystem.Model;
 import java.util.*;
 
 import EventTicketingSystem.Helpers.AppConstants;
+import EventTicketingSystem.Model.Ticket;
 
 public class UserManager {
     private List<User> users = new ArrayList<>();
@@ -63,4 +64,21 @@ public class UserManager {
         return;
     }
 
+    //Ticket Related to management
+
+    public void attachTicketToUser(Ticket ticket) {
+        User user = getLoggedInUser();
+
+        if (user != null) {
+            user.tickets.add(ticket);
+        }
+    }
+
+    public List<Ticket> getAllUserBookedEvents() {
+        return new ArrayList<Ticket>(getLoggedInUser().tickets);
+    }
+
+    public int getUserTicketsCount() {
+        return this.getLoggedInUser().tickets.size();
+    }
 }

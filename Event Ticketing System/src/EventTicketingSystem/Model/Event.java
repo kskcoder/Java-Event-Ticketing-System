@@ -36,6 +36,14 @@ public class Event {
         return this.id;
     }
 
+    public int getQuantity() {
+        return this.ticketsAvailable;
+    }
+
+    public EventStatus getStatus() {
+        return this.status;
+    }
+
     //Setter
     public void setEventName(String name) {
         this.name = name;

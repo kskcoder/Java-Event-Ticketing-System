@@ -12,11 +12,9 @@ public class LoginAndSignUpView {
 
         while (true) {
             if (username == null && password == null) {
-                System.out.println("\nEnter Username and Password \n\n");
+                System.out.println("\nEnter Username and Password");
                 System.out.print("Username: "); 
                 username = sc.next();
-    
-                System.out.println();
 
                 System.out.print("Password: "); 
                 password = sc.next();
@@ -43,7 +41,6 @@ public class LoginAndSignUpView {
     }
 
     public String incorrectPassword(int attempts) {
-        System.out.println();
         System.out.print("Incorrect Password please re-enter ("+attempts+" left):");
         return sc.next();    
     }

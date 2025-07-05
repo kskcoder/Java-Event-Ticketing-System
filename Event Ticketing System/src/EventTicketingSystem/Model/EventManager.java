@@ -82,6 +82,7 @@ public class EventManager {
         if (event != null) {
             event.setEventName(name);
         }
+        return;
     }
 
     public void updateEventVenue(int id, String venue) {
@@ -90,6 +91,7 @@ public class EventManager {
         if (event != null) {
             event.setEventVenue(venue);
         }
+        return;
     }
 
     public void updateEventDate(int id, LocalDateTime date) {
@@ -98,6 +100,7 @@ public class EventManager {
         if (event != null) {
             event.setEventDate(date);
         }
+        return;
     }
 
     public void updateEventPrice(int id, int price) {
@@ -106,6 +109,7 @@ public class EventManager {
         if (event != null) {
             event.setEventPrice(price);
         }
+        return;
     }
 
     public void updateEventStatus(int id, Event.EventStatus status) {
@@ -113,6 +117,20 @@ public class EventManager {
 
         if (event != null) {
             event.setEventStatus(status);
+        }
+        return;
+    }
+
+    //Booking management
+    public void updateBookedEvent(int id, int quantity, boolean add) {
+        Event event = getEventById(id);
+
+        if (event != null) {
+            if (add) {
+                event.setEventQuantity(event.getQuantity() + quantity);
+            } else {
+                event.setEventQuantity(event.getQuantity() - quantity);
+            }
         }
     }
 

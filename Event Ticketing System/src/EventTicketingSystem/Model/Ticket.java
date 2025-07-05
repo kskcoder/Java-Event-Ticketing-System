@@ -27,6 +27,20 @@ public class Ticket {
         +"\nDate: "+this.event.date.format(dateTimeFormatter)
         +"\nVenue: "+this.event.venue
         +"\nQuantity: "+this.quantity
-        +"\nAmount paid: "+this.event.price;
+        +"\nAmount paid: "+this.event.price+"\n";
     }
+
+    public int getTicketId() {
+        return this.ticketId;
+    }
+
+    public int getBookedQuantity() {
+        return this.quantity;
+    }
+
+    public int getRelatedEventId() {
+        return this.event.id;
+    }
+
+    
 }

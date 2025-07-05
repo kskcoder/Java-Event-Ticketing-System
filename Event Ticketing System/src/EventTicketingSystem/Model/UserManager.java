@@ -3,7 +3,6 @@ package EventTicketingSystem.Model;
 import java.util.*;
 
 import EventTicketingSystem.Helpers.AppConstants;
-import EventTicketingSystem.Model.Ticket;
 
 public class UserManager {
     private List<User> users = new ArrayList<>();
@@ -72,6 +71,16 @@ public class UserManager {
         if (user != null) {
             user.tickets.add(ticket);
         }
+        return;
+    }
+
+    public void cancelTicketOfUser(Ticket ticket) {
+        User user = getLoggedInUser();
+
+        if (user != null) {
+            user.tickets.remove(ticket);
+        }
+        return;
     }
 
     public List<Ticket> getAllUserBookedEvents() {
@@ -80,5 +89,9 @@ public class UserManager {
 
     public int getUserTicketsCount() {
         return this.getLoggedInUser().tickets.size();
+    }
+
+    public Ticket getEventByTicketId(int ticketId) {
+        return this.getAllUserBookedEvents().stream().filter(ticket -> ticket.getTicketId() == ticketId).findFirst().orElse(null);
     }
 }

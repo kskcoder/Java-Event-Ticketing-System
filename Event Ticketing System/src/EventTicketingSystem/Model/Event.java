@@ -65,6 +65,10 @@ public class Event {
         this.status = status;
     }
 
+    public void setEventQuantity(int quantity) {
+        this.ticketsAvailable = quantity;
+    }
+
     @Override
     public String toString() {
         return "Event Details: \nId: "+this.id

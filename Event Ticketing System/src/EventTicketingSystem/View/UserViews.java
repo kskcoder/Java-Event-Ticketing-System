@@ -3,8 +3,7 @@ package EventTicketingSystem.View;
 import java.util.*;
 
 import EventTicketingSystem.Helpers.InputHelper;
-import EventTicketingSystem.Model.Event;
-import EventTicketingSystem.Model.Ticket;;
+import EventTicketingSystem.Model.Ticket;
 
 public class UserViews extends EventBaseViews{
     Scanner sc = new Scanner(System.in);
@@ -66,6 +65,18 @@ public class UserViews extends EventBaseViews{
             System.out.println(ticket);
         }
         System.out.println("Showing "+tickets.size()+" out of total.");
+        return;
+    }
+
+    //Cancel booking
+    public boolean askForCancellation() {
+        System.out.println();
+        return InputHelper.getNonEmptyString("Do you want to cancel a ticket?(Y for Yes else ): ").equalsIgnoreCase("y");
+    }
+
+    public void ticketCancelledSuccessfully() {
+        System.out.println();
+        System.out.println("Ticket cancelled successfully!");
         return;
     }
 }

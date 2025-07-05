@@ -1,7 +1,5 @@
 package EventTicketingSystem.Model;
 
-import EventTicketingSystem.Model.Ticket;
-
 import java.util.*;
 
 public class User {
@@ -40,12 +38,4 @@ public class User {
     public String toString() {
         return "Username: "+this.username;
     }
-
-    // public void addTicket(Ticket ticket) {
-    //     this.tickets.add(ticket);
-    // }
-
-    // public List<Ticket> getTickets() {
-    //     return new ArrayList<Ticket>(this.tickets);
-    // }
 }

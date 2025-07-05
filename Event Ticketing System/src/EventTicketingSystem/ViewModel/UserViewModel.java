@@ -28,6 +28,16 @@ public class UserViewModel {
                     break;
                 case 2:
                     userViews.showTicketsList(userManager.getAllUserBookedEvents(), userManager.getUserTicketsCount());
+                    if (userManager.getUserTicketsCount() > 0 && userViews.askForCancellation()) {
+                        Ticket ticket = userManager.getEventByTicketId(userViews.viewEventsById());
+                        if (ticket != null) {
+                            eventManager.updateBookedEvent(ticket.getRelatedEventId(), ticket.getBookedQuantity(), true);
+                            userManager.cancelTicketOfUser(ticket);
+                            userViews.ticketCancelledSuccessfully();
+                        } else {
+                            userViews.noEventFound();
+                        }
+                    }
                     break;
                 case 3:
                     userManager.logOutUser();
@@ -109,7 +119,8 @@ public class UserViewModel {
             while (event.getQuantity() < quantity) {
                 quantity = userViews.getQuantity(event.getQuantity(), true);
             }
-
+            
+            eventManager.updateBookedEvent(Id, quantity, false);
             userManager.attachTicketToUser(new Ticket(userManager.getLoggedInUser(), event, quantity));
             userViews.eventBookedSuccessfullyMessage();            
         }

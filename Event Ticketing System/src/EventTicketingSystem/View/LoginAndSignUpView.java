@@ -1,6 +1,7 @@
 package EventTicketingSystem.View;
 
 import java.util.*;
+import EventTicketingSystem.Helpers.InputHelper;
 import EventTicketingSystem.Model.User;
 
 public class LoginAndSignUpView {
@@ -13,23 +14,19 @@ public class LoginAndSignUpView {
         while (true) {
             if (username == null && password == null) {
                 System.out.println("\nEnter Username and Password");
-                System.out.print("Username: "); 
-                username = sc.next();
+                username = InputHelper.getNonEmptyString("Username: ");
 
-                System.out.print("Password: "); 
-                password = sc.next();
+                password = InputHelper.getNonEmptyString("Password: ");
 
                 System.out.println();
             }            
 
             if (username == null) {
                 System.out.println("Username cannot be blank! Please re-enter username: ");
-                System.out.print("Username: "); 
-                username = sc.next();
+                username = InputHelper.getNonEmptyString("Username: ");
             } else if (password == null) {
                 System.out.println("Password cannot be blank! Please re-enter password: ");
-                System.out.print("Password: "); 
-                password = sc.next();
+                password = InputHelper.getNonEmptyString("Password: ");
             } else {
                 return new User(username, password, false);
             }
@@ -41,23 +38,20 @@ public class LoginAndSignUpView {
     }
 
     public String incorrectPassword(int attempts) {
-        System.out.print("Incorrect Password please re-enter ("+attempts+" left):");
-        return sc.next();    
+
+        return InputHelper.getNonEmptyString("Incorrect Password please re-enter ("+attempts+" left):");   
     }
 
     public String acceptNewUsername() {
-        System.out.print("Enter new username: ");
-        return sc.next();
+        return InputHelper.getNonEmptyString("Enter new username: ");   
     }
 
     public String userAlreadyExists(int attempts) {
-        System.out.print("Username exists already, please use another username ("+attempts+" attempts left): ");
-        return sc.next();
+        return InputHelper.getNonEmptyString("Username exists already, please use another username ("+attempts+" attempts left): ");   
     }
 
     public String acceptPassword() {
-        System.out.print("Enter new password: ");
-        return sc.next();
+        return InputHelper.getNonEmptyString("Enter new password: ");
     }
 
     public void userSuccessfulMessage(boolean loggedIN) {

@@ -36,6 +36,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "Username: "+this.username;
+        return "Username: "+this.username
+                +"\nIs Admin: "+this.isAdmin();
     }
 }

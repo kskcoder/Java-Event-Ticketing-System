@@ -3,6 +3,7 @@ package EventTicketingSystem.ViewModel;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.Event;
 import EventTicketingSystem.Model.Ticket;
 import EventTicketingSystem.Model.UserManager;
@@ -13,6 +14,7 @@ public class UserViewModel {
     UserManager userManager;
     UserViews userViews;
     EventManager eventManager;
+    User currentLoggedInUser;
 
     public UserViewModel(UserManager userManager, UserViews userViews, EventManager eventManager) {
         this.userManager = userManager;
@@ -21,18 +23,19 @@ public class UserViewModel {
     }
 
     public void showUserFlow() {
+        this.currentLoggedInUser = userManager.getLoggedInUser();
         while (true) {
             switch (userViews.showMainMenu()) {
                 case 1:
                     showEventsControl(userViews.viewEventMenu());
                     break;
                 case 2:
-                    userViews.showTicketsList(userManager.getAllUserBookedEvents(), userManager.getUserTicketsCount());
-                    if (userManager.getUserTicketsCount() > 0 && userViews.askForCancellation()) {
-                        Ticket ticket = userManager.getEventByTicketId(userViews.viewEventsById());
+                    userViews.showTicketsList(userManager.getAllUserBookedEvents(currentLoggedInUser), userManager.getUserTicketsCount(currentLoggedInUser));
+                    if (userManager.getUserTicketsCount(currentLoggedInUser) > 0 && userViews.askForCancellation()) {
+                        Ticket ticket = userManager.getEventByTicketId(currentLoggedInUser, userViews.getEventsId());
                         if (ticket != null) {
                             eventManager.updateBookedEvent(ticket.getRelatedEventId(), ticket.getBookedQuantity(), true);
-                            userManager.cancelTicketOfUser(ticket);
+                            userManager.cancelTicketOfUser(currentLoggedInUser, ticket);
                             userViews.ticketCancelledSuccessfully();
                         } else {
                             userViews.noEventFound();
@@ -43,6 +46,13 @@ public class UserViewModel {
                     userManager.logOutUser();
                     userViews.userLoggedOutMessage();
                     return;
+                case 4:
+                    if (userViews.askForDeletion()) {
+                        userManager.deleteUser(userManager.getLoggedInUser());
+                        userViews.userDeletedSuccessfullyMessage();
+                        return;
+                    }
+                    break;
             }
         }
     }
@@ -56,35 +66,35 @@ public class UserViewModel {
                 break;
             }
             case 2: {
-                int price = userViews.viewEventsUnderPrice();
+                int price = userViews.getEventsPrice();
                 List<Event> events = eventManager.getEventsUnderPrice(price);
                 userViews.showEventsList(events, eventManager.getTotalEventsCount());
                 showBookingOptionControl();
                 break;
             }
             case 3: {
-                String name = userViews.viewEventsByName();
+                String name = userViews.getEventsName();
                 Event event = eventManager.getEventByName(name);
                 userViews.showSingleEvent(event, eventManager.getTotalEventsCount());
                 showBookingOptionControl();
                 break;
             }
             case 4: {
-                int id = userViews.viewEventsById();
+                int id = userViews.getEventsId();
                 Event event = eventManager.getEventById(id);
                 userViews.showSingleEvent(event, eventManager.getTotalEventsCount());
                 showBookingOptionControl();
                 break;
             }
             case 5: {
-                Event.EventStatus status = userViews.viewEventsByStatus();
+                Event.EventStatus status = userViews.getEventsStatus();
                 List<Event> events = eventManager.getEventByStatus(status);
                 userViews.showEventsList(events, eventManager.getTotalEventsCount());
                 showBookingOptionControl();
                 break;
             }
             case 6: {
-                LocalDateTime date = userViews.viewEventsByDate();
+                LocalDateTime date = userViews.getEventsDate();
                 List<Event> events = eventManager.getEventsByDate(date);
                 userViews.showEventsList(events, eventManager.getTotalEventsCount());
                 showBookingOptionControl();
@@ -121,7 +131,7 @@ public class UserViewModel {
             }
             
             eventManager.updateBookedEvent(Id, quantity, false);
-            userManager.attachTicketToUser(new Ticket(userManager.getLoggedInUser(), event, quantity));
+            userManager.attachTicketToUser(new Ticket(currentLoggedInUser, event, quantity));
             userViews.eventBookedSuccessfullyMessage();            
         }
         return;

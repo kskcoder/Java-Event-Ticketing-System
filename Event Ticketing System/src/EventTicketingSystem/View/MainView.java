@@ -1,6 +1,7 @@
 package EventTicketingSystem.View;
 
 import java.util.*;
+import EventTicketingSystem.Helpers.InputHelper;
 
 public class MainView {
     Scanner sc = new Scanner(System.in);
@@ -8,9 +9,7 @@ public class MainView {
     public int showMainMenu() {
         while(true) {
             System.out.println("\nWelcome to Event Tickets! \n\nSelect an option to continue: \n\n1. Login \n2. Signup \n3. Exit \n");
-            System.out.print("Enter Choice: ");
-
-            int option = sc.nextInt();
+            int option = InputHelper.getInt("Enter Choice: ");
     
             switch (option) {
                 case 1,2:

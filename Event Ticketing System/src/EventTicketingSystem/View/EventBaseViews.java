@@ -8,6 +8,7 @@ import java.util.List;
 import EventTicketingSystem.Helpers.InputHelper;
 import EventTicketingSystem.Model.Event;
 import EventTicketingSystem.Model.Event.EventStatus;
+import EventTicketingSystem.Model.Ticket;
 
 public abstract class EventBaseViews {
         public int viewEventMenu() {
@@ -26,25 +27,21 @@ public abstract class EventBaseViews {
         }
     }    
 
-    public int viewEventsUnderPrice() {
+    public int getEventsPrice() {
         System.out.println();
         int price = InputHelper.getInt("Enter price(in Rupees): ");
         return price;
     }
 
-    public String viewEventsByName() {
-        System.out.println();
-        String name = InputHelper.getNonEmptyString("Enter name: ");
-        return name;
+    public String getEventsName() {
+        return InputHelper.getNonEmptyString("Enter name event: ");
     }
 
-    public int viewEventsById() {
-        System.out.println();
-        int id = InputHelper.getInt("Enter Id: ");
-        return id;
+    public int getEventsId() {
+        return InputHelper.getInt("Enter Event Id: ");
     }
 
-    public EventStatus viewEventsByStatus() {
+    public EventStatus getEventsStatus() {
         System.out.println();
         System.out.print("Enter Event Status: ");
         Event.EventStatus eventStatus = null;
@@ -68,7 +65,7 @@ public abstract class EventBaseViews {
         return EventStatus.UPCOMING;
     }
 
-    public LocalDateTime viewEventsByDate() {
+    public LocalDateTime getEventsDate() {
         LocalDateTime dateTime = null;
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         
@@ -82,6 +79,10 @@ public abstract class EventBaseViews {
         }
 
         return dateTime;
+    }
+
+    public String getEventVenueToUpdate() {
+        return InputHelper.getNonEmptyString("Enter new venue for event: ");
     }
 
     public void showSingleEvent(Event event, int totalEvents) {
@@ -110,5 +111,44 @@ public abstract class EventBaseViews {
         return;
     }
 
+    //Show Tickets of Users
+
     public abstract int showMainMenu();
+
+    public void showTicketsList(List<Ticket> tickets, int totalEvents) {
+        System.out.println("Following are the results:");
+        System.out.println();
+
+        for (Ticket ticket: tickets) {
+            System.out.println(ticket);
+        }
+        System.out.println("Showing "+tickets.size()+" out of total.");
+        System.out.println();
+        return;
+    }
+
+    //Cancel booking
+    public boolean askForCancellation() {
+        System.out.println();
+        return InputHelper.getNonEmptyString("Do you want to cancel a ticket?(Y for Yes else anykey): ").equalsIgnoreCase("y");
+    }
+
+    public void ticketCancelledSuccessfully() {
+        System.out.println();
+        System.out.println("Ticket cancelled successfully!");
+        return;
+    }
+
+    //Account Deletion
+    public boolean askForDeletion() {
+        System.out.println();
+        return InputHelper.getNonEmptyString("Are you sure you want to delete account, cannot undo this action?(Y for Yes else anykey): ").equalsIgnoreCase("y");
+    }
+
+    public void userDeletedSuccessfullyMessage() {
+        System.out.println();
+        System.out.println("User Deleted Successfully!");
+        System.out.println();
+        return;
+    }
 }

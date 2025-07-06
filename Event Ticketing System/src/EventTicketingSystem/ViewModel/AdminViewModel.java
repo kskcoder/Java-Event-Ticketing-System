@@ -2,10 +2,12 @@ package EventTicketingSystem.ViewModel;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.Admin;
 import EventTicketingSystem.Model.UserManager;
 import EventTicketingSystem.Model.Event;
 import EventTicketingSystem.Model.EventManager;
+import EventTicketingSystem.Model.Ticket;
 import EventTicketingSystem.View.AdminViews;
 import EventTicketingSystem.View.LoginAndSignUpView;;
 
@@ -34,12 +36,19 @@ public class AdminViewModel {
                     showEventManagementMenu();
                     break;
                 case 3:
-
+                    userManagementControl();
+                    break;
                 case 4:
-                case 5:
                     userManager.logOutUser();
                     adminViews.adminLoggedOutMessage();
                     return;
+                case 5:
+                    if (adminViews.askForDeletion()) {
+                        userManager.deleteUser(userManager.getLoggedInUser());
+                        adminViews.userDeletedSuccessfullyMessage();
+                        return;
+                    }
+                    break;
             }
         }
     }
@@ -109,7 +118,7 @@ public class AdminViewModel {
                     break;
                 case 4:
                     while (true) {
-                        int id = adminViews.viewEventsById();
+                        int id = adminViews.getEventsId();
                         Event event = eventManager.getEventById(id);
 
                         if (event != null) {
@@ -134,31 +143,31 @@ public class AdminViewModel {
                 return;
             }
             case 2: {
-                int price = adminViews.viewEventsUnderPrice();
+                int price = adminViews.getEventsPrice();
                 List<Event> events = eventManager.getEventsUnderPrice(price);
                 adminViews.showEventsList(events, eventManager.getTotalEventsCount());
                 return;
             }
             case 3: {
-                String name = adminViews.viewEventsByName();
+                String name = adminViews.getEventsName();
                 Event event = eventManager.getEventByName(name);
                 adminViews.showSingleEvent(event, eventManager.getTotalEventsCount());
                 return;
             }
             case 4: {
-                int id = adminViews.viewEventsById();
+                int id = adminViews.getEventsId();
                 Event event = eventManager.getEventById(id);
                 adminViews.showSingleEvent(event, eventManager.getTotalEventsCount());
                 return;
             }
             case 5: {
-                Event.EventStatus status = adminViews.viewEventsByStatus();
+                Event.EventStatus status = adminViews.getEventsStatus();
                 List<Event> events = eventManager.getEventByStatus(status);
                 adminViews.showEventsList(events, eventManager.getTotalEventsCount());
                 return;
             }
             case 6: {
-                LocalDateTime date = adminViews.viewEventsByDate();
+                LocalDateTime date = adminViews.getEventsDate();
                 List<Event> events = eventManager.getEventsByDate(date);
                 adminViews.showEventsList(events, eventManager.getTotalEventsCount());
                 return;
@@ -171,7 +180,7 @@ public class AdminViewModel {
 
         switch (choice) {
             case 1: {
-                eventManager.updateEventName(id, adminViews.getEventNameToUpdate());
+                eventManager.updateEventName(id, adminViews.getEventsName());
                 break;
             }
             case 2: {
@@ -179,20 +188,69 @@ public class AdminViewModel {
                 break;
             }
             case 3: {
-                eventManager.updateEventDate(id, adminViews.getEventDateToUpdate());
+                eventManager.updateEventDate(id, adminViews.getEventsDate());
                 break;
             }
             case 4: {
-                eventManager.updateEventPrice(id, adminViews.getEventPriceToUpdate());
+                eventManager.updateEventPrice(id, adminViews.getEventsPrice());
                 break;
             }
             case 5: {
-                eventManager.updateEventStatus(id, adminViews.getEventStatusToUpdate());
+                eventManager.updateEventStatus(id, adminViews.getEventsStatus());
                 break;
             }        
         }
 
         adminViews.showUpdatedMessage();
         adminViews.showSingleEvent(eventManager.getEventById(id), id);
+    }
+
+    //User Management Control
+
+    public void userManagementControl() {
+        while (true) {
+            switch (adminViews.showUserManagementMenu()) {
+                case 1:
+                    adminViews.showUsersList(userManager.getAllUsers());
+                    break;
+                case 2:
+                    adminViews.showUsersList(userManager.getOnlyAdmins());
+                    break;
+                case 3:
+                    adminViews.showUsersList(userManager.getOnlyUsers());
+                    if (userManager.getOnlyUsers().size() > 0 && adminViews.askToShowTickets()) {
+                        User user = userManager.getUserByUsername(adminViews.enterUserName());
+                        if (user != null) {
+                            adminViews.showTicketsList(userManager.getAllUserBookedEvents(user), userManager.getAllUserBookedEvents(user).size());
+
+                            if (userManager.getUserTicketsCount(user) > 0 && adminViews.askForCancellation()) {
+                            Ticket ticket = userManager.getEventByTicketId(user, adminViews.getEventsId());
+                            if (ticket != null) {
+                                eventManager.updateBookedEvent(ticket.getRelatedEventId(), ticket.getBookedQuantity(), true);
+                                userManager.cancelTicketOfUser(user, ticket);
+                                adminViews.ticketCancelledSuccessfully();
+                            } else {
+                                adminViews.noEventFound();
+                            }
+                    }
+                        } else {
+                            adminViews.userNotFound();
+                            break;
+                        }
+                    } else if (adminViews.askToDeleteUsers()) {
+                        User user = userManager.getUserByUsername(adminViews.enterUserName());
+                        if (user != null && user != userManager.getLoggedInUser()) {
+                            userManager.deleteUser(user);
+                            adminViews.userDeletedSuccessfullyMessage();
+                        } else {
+                            adminViews.cannotPerformActionMessage();
+                            break;
+                        }
+                    }
+                    break;
+                case 4:
+                    return;
+            }
+        }
     }
 }

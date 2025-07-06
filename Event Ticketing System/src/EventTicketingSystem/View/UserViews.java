@@ -3,20 +3,17 @@ package EventTicketingSystem.View;
 import java.util.*;
 
 import EventTicketingSystem.Helpers.InputHelper;
-import EventTicketingSystem.Model.Ticket;
 
 public class UserViews extends EventBaseViews{
     Scanner sc = new Scanner(System.in);
     
     public int showMainMenu() {
         while (true) {
-            System.out.println("\n\nSelect an option to continue: \n\n1. Browse Events \n2. Show Booked Tickets \n3. Log Out \n");
-            System.out.print("Enter Choice: ");
-
-            int option = sc.nextInt();
+            System.out.println("\n\nSelect an option to continue: \n\n1. Browse Events \n2. Show Booked Tickets \n3. Log Out \n4. Delete Account\n");
+            int option = InputHelper.getInt("Enter Choice: ");
     
             switch (option) {
-                case 1, 2, 3:
+                case 1, 2, 3, 4:
                     return option;
                 default:
                     System.out.println("Please enter a valid choice!");
@@ -54,29 +51,6 @@ public class UserViews extends EventBaseViews{
         System.out.println();
         System.out.println("Event booked successfully!");
         System.out.println();
-        return;
-    }
-
-    public void showTicketsList(List<Ticket> tickets, int totalEvents) {
-        System.out.println("Following are the results:");
-        System.out.println();
-
-        for (Ticket ticket: tickets) {
-            System.out.println(ticket);
-        }
-        System.out.println("Showing "+tickets.size()+" out of total.");
-        return;
-    }
-
-    //Cancel booking
-    public boolean askForCancellation() {
-        System.out.println();
-        return InputHelper.getNonEmptyString("Do you want to cancel a ticket?(Y for Yes else ): ").equalsIgnoreCase("y");
-    }
-
-    public void ticketCancelledSuccessfully() {
-        System.out.println();
-        System.out.println("Ticket cancelled successfully!");
         return;
     }
 }

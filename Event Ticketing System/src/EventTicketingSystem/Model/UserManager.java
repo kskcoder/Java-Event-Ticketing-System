@@ -3,6 +3,7 @@ package EventTicketingSystem.Model;
 import java.util.*;
 
 import EventTicketingSystem.Helpers.AppConstants;
+import java.util.stream.Collectors;
 
 public class UserManager {
     private List<User> users = new ArrayList<>();
@@ -35,6 +36,14 @@ public class UserManager {
         return new ArrayList<User>(this.users);
     }
 
+    public List<User> getOnlyAdmins() {
+        return new ArrayList<User>(this.users.stream().filter(user -> user.isAdmin() == true).collect(Collectors.toList()));
+    }
+
+    public List<User> getOnlyUsers() {
+        return new ArrayList<User>(this.users.stream().filter(user -> user.isAdmin() == false).collect(Collectors.toList()));
+    }
+
     public boolean isUsernameTaken(String username) {
         return users.stream().anyMatch(user -> user.getUserName().equals(username));
     }
@@ -56,6 +65,11 @@ public class UserManager {
         addNewUser(new Admin("Admin", "0000", true));        
     }
 
+    public void deleteUser(User user) {
+        this.users.remove(user);
+        return; 
+    }
+
     //Log Out User
 
     public void logOutUser() {
@@ -74,24 +88,22 @@ public class UserManager {
         return;
     }
 
-    public void cancelTicketOfUser(Ticket ticket) {
-        User user = getLoggedInUser();
-
+    public void cancelTicketOfUser(User user, Ticket ticket) {
         if (user != null) {
             user.tickets.remove(ticket);
         }
         return;
     }
 
-    public List<Ticket> getAllUserBookedEvents() {
-        return new ArrayList<Ticket>(getLoggedInUser().tickets);
+    public List<Ticket> getAllUserBookedEvents(User user) {
+        return new ArrayList<Ticket>(user.tickets);
     }
 
-    public int getUserTicketsCount() {
-        return this.getLoggedInUser().tickets.size();
+    public int getUserTicketsCount(User user) {
+        return user.tickets.size();
     }
 
-    public Ticket getEventByTicketId(int ticketId) {
-        return this.getAllUserBookedEvents().stream().filter(ticket -> ticket.getTicketId() == ticketId).findFirst().orElse(null);
+    public Ticket getEventByTicketId(User user, int ticketId) {
+        return this.getAllUserBookedEvents(user).stream().filter(ticket -> ticket.getTicketId() == ticketId).findFirst().orElse(null);
     }
 }

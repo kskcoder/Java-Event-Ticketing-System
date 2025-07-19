@@ -15,6 +15,13 @@ public class EventManager {
         return;
     }
 
+    public void addMultipleEvents(List<Event> events) {
+        for (Event event: events) {
+            this.events.add(event);
+        }
+        return;
+    }
+
     public boolean eventExistsAlready(Event event) {
         return events
         .stream().anyMatch(events -> events.hashCode() == event.hashCode());
@@ -30,6 +37,11 @@ public class EventManager {
         } else {
             return false;
         }        
+    }
+
+    public void setIdForNewSession() {
+        Event.setAutoId(getAllEvents().get(getTotalEventsCount()-1).id+1);
+        return;
     }
 
     //View Event

@@ -14,10 +14,24 @@ public class Event {
     protected int ticketsAvailable;    
     protected EventStatus status;
 
-    DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private static DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+    //Constructor for storing runtime events
     public Event(String name, String venue, LocalDateTime date, int price, int totalTickets, int ticketsAvailable, EventStatus status) {
         this.id = idCounter++;
+        this.name = name;
+        this.venue = venue;
+        this.date = date;
+        this.price = price;
+        this.totalTickets = totalTickets;
+        this.ticketsAvailable = ticketsAvailable;
+        this.status = status;
+    }
+
+    //Constructor for loading saved events
+
+    public Event(int id, String name, String venue, LocalDateTime date, int price, int totalTickets, int ticketsAvailable, EventStatus status) {
+        this.id = id;
         this.name = name;
         this.venue = venue;
         this.date = date;
@@ -36,6 +50,22 @@ public class Event {
         return this.id;
     }
 
+    public String getVenue() {
+        return this.venue;
+    }
+
+    public LocalDateTime getDate() {
+        return this.date;
+    }
+
+    public int getPrice() {
+        return this.price;
+    }
+   
+    public int getTotalTickets() {
+        return this.totalTickets;
+    }
+
     public int getQuantity() {
         return this.ticketsAvailable;
     }
@@ -44,7 +74,14 @@ public class Event {
         return this.status;
     }
 
+
+
     //Setter
+    public static void setAutoId(int id) {
+        idCounter = id;
+        return;
+    } 
+
     public void setEventName(String name) {
         this.name = name;
     }

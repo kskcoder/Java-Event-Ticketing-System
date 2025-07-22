@@ -6,6 +6,7 @@ import EventTicketingSystem.View.LoginAndSignUpView;
 import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.UserManager;
 import EventTicketingSystem.Model.EventManager;
+import EventTicketingSystem.Model.TicketManager;
 import EventTicketingSystem.Helpers.FileManager;
 
 public class MainViewModel {
@@ -14,12 +15,14 @@ public class MainViewModel {
     private static LoginAndSignUpView loginAndSignUpView = new LoginAndSignUpView();
     private static final UserManager userManager = new UserManager();
     private static final EventManager eventManager = new EventManager();
-    private static AdminViewModel adminViewModel = new AdminViewModel(userManager, eventManager);
-    private static UserViewModel userViewModel = new UserViewModel(userManager, userViews, eventManager);
+    private static final TicketManager ticketManager = new TicketManager();
+    private static AdminViewModel adminViewModel = new AdminViewModel(userManager, eventManager, ticketManager);
+    private static UserViewModel userViewModel = new UserViewModel(userManager, userViews, eventManager, ticketManager);
 
     public static void start() {
-        userManager.createDefaultAdmin();
+        // userManager.createDefaultAdmin(); //Uncomment to seed a default admin from UserManager file
         // eventManager.seedData(); //Uncomment to seed temp list of readymade events from EventManager file
+        userManager.addMultipleUsers(FileManager.loadUsers());
         eventManager.addMultipleEvents(FileManager.loadEvents());
         eventManager.setIdForNewSession();
         showMainMenu();
@@ -38,6 +41,7 @@ public class MainViewModel {
                     
                 case 3:
                     FileManager.saveEvents(eventManager.getAllEvents());
+                    FileManager.saveUsers(userManager.getAllUsers());
                     return;
             }
         }

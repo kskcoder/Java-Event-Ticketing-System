@@ -32,6 +32,13 @@ public class UserManager {
         return;
     }
 
+    public void addMultipleUsers(List<User> users) {
+        for (User user: users) {
+            this.users.add(user);
+        }
+        return;
+    }
+
     public List<User> getAllUsers() {
         return new ArrayList<User>(this.users);
     }
@@ -61,9 +68,9 @@ public class UserManager {
 
     //Admin related management
 
-    public void createDefaultAdmin() {
-        addNewUser(new Admin("Admin", "0000", true));        
-    }
+    // public void createDefaultAdmin() {
+    //     addNewUser(new Admin("Admin", "0000", true));        
+    // }
 
     public void deleteUser(User user) {
         this.users.remove(user);

@@ -2,26 +2,30 @@ package EventTicketingSystem.ViewModel;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
+import EventTicketingSystem.View.AdminViews;
+import EventTicketingSystem.View.LoginAndSignUpView;
 import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.Admin;
-import EventTicketingSystem.Model.UserManager;
-import EventTicketingSystem.Model.Event;
-import EventTicketingSystem.Model.EventManager;
 import EventTicketingSystem.Model.Ticket;
-import EventTicketingSystem.View.AdminViews;
-import EventTicketingSystem.View.LoginAndSignUpView;;
+import EventTicketingSystem.Model.Event;
+import EventTicketingSystem.Model.UserManager;
+import EventTicketingSystem.Model.EventManager;
+import EventTicketingSystem.Model.TicketManager;
 
 public class AdminViewModel {
     UserManager userManager;
     EventManager eventManager;
+    TicketManager ticketManager;
     private static AdminViews adminViews;
     private static LoginAndSignUpView loginAndSignUpView;
 
     Scanner sc = new Scanner(System.in);
 
-    public AdminViewModel(UserManager userManager, EventManager eventManager) {
+    public AdminViewModel(UserManager userManager, EventManager eventManager, TicketManager ticketManager) {
         this.userManager = userManager;
         this.eventManager = eventManager;
+        this.ticketManager = ticketManager;
         adminViews = new AdminViews();
         loginAndSignUpView = new LoginAndSignUpView();
     }
@@ -227,6 +231,7 @@ public class AdminViewModel {
                             Ticket ticket = userManager.getEventByTicketId(user, adminViews.getEventsId());
                             if (ticket != null) {
                                 eventManager.updateBookedEvent(ticket.getRelatedEventId(), ticket.getBookedQuantity(), true);
+                                ticketManager.removeTicketFromList(user, ticket);
                                 userManager.cancelTicketOfUser(user, ticket);
                                 adminViews.ticketCancelledSuccessfully();
                             } else {

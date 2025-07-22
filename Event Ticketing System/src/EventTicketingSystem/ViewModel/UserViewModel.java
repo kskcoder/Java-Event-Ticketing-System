@@ -3,27 +3,30 @@ package EventTicketingSystem.ViewModel;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import EventTicketingSystem.View.UserViews;
 import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.Event;
 import EventTicketingSystem.Model.Ticket;
 import EventTicketingSystem.Model.UserManager;
 import EventTicketingSystem.Model.EventManager;
-import EventTicketingSystem.View.UserViews;
+import EventTicketingSystem.Model.TicketManager;
 
 public class UserViewModel {
     UserManager userManager;
     UserViews userViews;
     EventManager eventManager;
+    TicketManager ticketManager;
     User currentLoggedInUser;
 
-    public UserViewModel(UserManager userManager, UserViews userViews, EventManager eventManager) {
+    public UserViewModel(UserManager userManager, UserViews userViews, EventManager eventManager, TicketManager ticketManager) {
         this.userManager = userManager;
         this.userViews = userViews;
         this.eventManager = eventManager;
+        this.ticketManager = ticketManager;
+        this.currentLoggedInUser = userManager.getLoggedInUser();
     }
 
-    public void showUserFlow() {
-        this.currentLoggedInUser = userManager.getLoggedInUser();
+    public void showUserFlow() {        
         while (true) {
             switch (userViews.showMainMenu()) {
                 case 1:
@@ -35,6 +38,7 @@ public class UserViewModel {
                         Ticket ticket = userManager.getEventByTicketId(currentLoggedInUser, userViews.getEventsId());
                         if (ticket != null) {
                             eventManager.updateBookedEvent(ticket.getRelatedEventId(), ticket.getBookedQuantity(), true);
+                            ticketManager.removeTicketFromList(currentLoggedInUser, ticket);
                             userManager.cancelTicketOfUser(currentLoggedInUser, ticket);
                             userViews.ticketCancelledSuccessfully();
                         } else {
@@ -131,6 +135,7 @@ public class UserViewModel {
             }
             
             eventManager.updateBookedEvent(Id, quantity, false);
+            ticketManager.addTicketToList(currentLoggedInUser, new Ticket(currentLoggedInUser, event, quantity);
             userManager.attachTicketToUser(new Ticket(currentLoggedInUser, event, quantity));
             userViews.eventBookedSuccessfullyMessage();            
         }

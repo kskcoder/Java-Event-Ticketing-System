@@ -9,7 +9,11 @@ public class TicketManager {
     private Map<String, List<Ticket>> userTicketMap = new HashMap<>();
 
     public void addTicketToList(User user, Ticket ticket) {
+        if (!this.userTicketMap.containsKey(user.getUserName())) {
+            this.userTicketMap.put(user.getUserName(), new ArrayList<Ticket>());
+        }
         this.userTicketMap.get(user.getUserName()).add(ticket);
+
         return;
     }
 
@@ -18,5 +22,15 @@ public class TicketManager {
         return;
     }
 
+    public List<Ticket> getAllTickets() {
+        List<Ticket> list = new ArrayList<Ticket>();
+
+        for (List<Ticket> tickets: userTicketMap.values()) {
+            for (Ticket ticket: tickets) {
+                list.add(ticket);
+            }
+        }
+        return list;
+    }
     
 }

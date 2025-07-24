@@ -17,13 +17,13 @@ public class MainViewModel {
     private static final EventManager eventManager = new EventManager();
     private static final TicketManager ticketManager = new TicketManager();
     private static AdminViewModel adminViewModel = new AdminViewModel(userManager, eventManager, ticketManager);
-    private static UserViewModel userViewModel = new UserViewModel(userManager, userViews, eventManager, ticketManager);
 
     public static void start() {
         // userManager.createDefaultAdmin(); //Uncomment to seed a default admin from UserManager file
         // eventManager.seedData(); //Uncomment to seed temp list of readymade events from EventManager file
         userManager.addMultipleUsers(FileManager.loadUsers());
         eventManager.addMultipleEvents(FileManager.loadEvents());
+
         eventManager.setIdForNewSession();
         showMainMenu();
     }
@@ -42,6 +42,7 @@ public class MainViewModel {
                 case 3:
                     FileManager.saveEvents(eventManager.getAllEvents());
                     FileManager.saveUsers(userManager.getAllUsers());
+                    FileManager.saveTickets(ticketManager.getAllTickets());
                     return;
             }
         }
@@ -117,6 +118,7 @@ public class MainViewModel {
         if (userManager.getLoggedInUser().isAdmin()) {
             adminViewModel.showAdminFlow(); 
         } else {
+            final UserViewModel userViewModel = new UserViewModel(userManager, userViews, eventManager, ticketManager);
             userViewModel.showUserFlow();
         }  
         return;

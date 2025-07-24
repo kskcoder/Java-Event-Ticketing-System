@@ -119,11 +119,17 @@ public class FileManager {
 
     private static final String TICKETS_FILE_NAME = "tickets.txt";
 
-    public static void storeTickets(List<Ticket> tickets) {
+    public static void saveTickets(List<Ticket> tickets) {
 
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(TICKETS_FILE_NAME, false))) {
             for (Ticket ticket: tickets) {
-                String string = 
+                String string = ticket.getTicketId()+","
+                                +ticket.getTicketUsername()+","
+                                +ticket.getRelatedEventId()+","
+                                +ticket.getBookedQuantity();
+
+                bufferedWriter.write(string);
+                bufferedWriter.newLine();
             }
         } catch (IOException e) {
             System.out.println("Error writing to the file "+e.getMessage());

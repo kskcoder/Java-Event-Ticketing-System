@@ -42,5 +42,12 @@ public class Ticket {
         return this.event.id;
     }
 
+    public String getTicketUsername() {
+        return this.user.getUserName();
+    }
+
+    public String getTicketEventName() {
+        return this.event.getEventName();
+    }
     
 }

@@ -136,7 +136,7 @@ public class UserViewModel {
             
             eventManager.updateBookedEvent(Id, quantity, false);
             ticketManager.addTicketToList(currentLoggedInUser, new Ticket(currentLoggedInUser, event, quantity));
-            userManager.attachTicketToUser(new Ticket(currentLoggedInUser, event, quantity));
+            userManager.attachTicketToUser(new Ticket(currentLoggedInUser, event, quantity), currentLoggedInUser);
             userViews.eventBookedSuccessfullyMessage();            
         }
         return;

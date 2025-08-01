@@ -19,6 +19,7 @@ public class EventManager {
         for (Event event: events) {
             this.events.add(event);
         }
+        setIdForNewSession();
         return;
     }
 

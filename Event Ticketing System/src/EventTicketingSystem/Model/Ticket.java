@@ -3,7 +3,7 @@ package EventTicketingSystem.Model;
 import java.time.format.DateTimeFormatter;
 
 public class Ticket {
-    private int ticketCounter = 1;
+    private static int ticketCounter = 1;
     private int ticketId;
     private User user;
     private Event event;
@@ -13,6 +13,13 @@ public class Ticket {
 
     public Ticket(User user, Event event, int quantity) {
         this.ticketId = ticketCounter++;
+        this.user = user;
+        this.event = event;
+        this.quantity = quantity;
+    }
+
+    public Ticket(int id, User user, Event event, int quantity) {
+        this.ticketId = id;
         this.user = user;
         this.event = event;
         this.quantity = quantity;
@@ -29,6 +36,8 @@ public class Ticket {
         +"\nQuantity: "+this.quantity
         +"\nAmount paid: "+this.event.price+"\n";
     }
+
+    //getters
 
     public int getTicketId() {
         return this.ticketId;
@@ -48,6 +57,12 @@ public class Ticket {
 
     public String getTicketEventName() {
         return this.event.getEventName();
+    }
+
+    //setters
+
+    public static void setAutoId(int id) {
+        ticketCounter = id;
     }
     
 }

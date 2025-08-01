@@ -13,6 +13,8 @@ import EventTicketingSystem.Model.Event;
 import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.Ticket;
 import EventTicketingSystem.Model.Event.EventStatus;
+import EventTicketingSystem.Model.UserManager;
+import EventTicketingSystem.Model.EventManager;
 
 public class FileManager {
 
@@ -134,5 +136,23 @@ public class FileManager {
         } catch (IOException e) {
             System.out.println("Error writing to the file "+e.getMessage());
         }
+    }
+
+    public static List<String[]> loadTickets() {
+        List<String[]> tickets = new ArrayList<>();
+
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(TICKETS_FILE_NAME))) {
+            String line = "";
+
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] str = line.split(",");
+                tickets.add(str);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error reading from file: "+e.getMessage());
+        }
+
+        return tickets;
     }
 }

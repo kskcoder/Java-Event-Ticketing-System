@@ -86,9 +86,7 @@ public class UserManager {
 
     //Ticket Related to management
 
-    public void attachTicketToUser(Ticket ticket) {
-        User user = getLoggedInUser();
-
+    public void attachTicketToUser(Ticket ticket, User user) {
         if (user != null) {
             user.tickets.add(ticket);
         }

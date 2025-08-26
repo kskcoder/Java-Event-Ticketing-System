@@ -26,6 +26,15 @@ public class UserViewModel {
         this.currentLoggedInUser = userManager.getLoggedInUser();
     }
 
+    //new parameterised constructor only for thread operations
+    public UserViewModel(UserManager userManager, UserViews userViews, EventManager eventManager, TicketManager ticketManager, User user) {
+        this.userManager = userManager;
+        this.userViews = userViews;
+        this.eventManager = eventManager;
+        this.ticketManager = ticketManager;
+        this.currentLoggedInUser = user;
+    }
+
     public void showUserFlow() {        
         while (true) {
             switch (userViews.showMainMenu()) {
@@ -129,6 +138,33 @@ public class UserViewModel {
             userViews.showSingleEvent(event, eventManager.getTotalEventsCount());
 
             int quantity = userViews.getQuantity(event.getQuantity(), false);
+
+            while (event.getQuantity() < quantity) {
+                quantity = userViews.getQuantity(event.getQuantity(), true);
+            }
+            
+            eventManager.updateBookedEvent(Id, quantity, false);
+            ticketManager.addTicketToList(currentLoggedInUser, new Ticket(currentLoggedInUser, event, quantity));
+            userManager.attachTicketToUser(new Ticket(currentLoggedInUser, event, quantity), currentLoggedInUser);
+            userViews.eventBookedSuccessfullyMessage();            
+        }
+        return;
+    }
+
+    public void showBookingOptionControl(int id, int quantityTemp, User user) {
+        int Id = id;
+        currentLoggedInUser = user;
+
+        if (Id != -1) {
+            Event event = eventManager.getEventById(Id);
+            
+            if (event.getQuantity() <= 0 || event.getStatus() == Event.EventStatus.CANCELLED) {
+                userViews.cannotBookTickets();
+                return;
+            }
+            userViews.showSingleEvent(event, eventManager.getTotalEventsCount());
+
+            int quantity = quantityTemp;
 
             while (event.getQuantity() < quantity) {
                 quantity = userViews.getQuantity(event.getQuantity(), true);

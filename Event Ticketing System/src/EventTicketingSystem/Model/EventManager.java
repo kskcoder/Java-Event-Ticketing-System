@@ -135,7 +135,7 @@ public class EventManager {
     }
 
     //Booking management
-    public void updateBookedEvent(int id, int quantity, boolean add) {
+    public synchronized void updateBookedEvent(int id, int quantity, boolean add) {
         Event event = getEventById(id);
 
         if (event != null) {

@@ -1,5 +1,9 @@
 package EventTicketingSystem.ViewModel;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import EventTicketingSystem.View.MainView;
 import EventTicketingSystem.View.UserViews;
 import EventTicketingSystem.View.LoginAndSignUpView;
@@ -23,7 +27,34 @@ public class MainViewModel {
         userManager.addMultipleUsers(FileManager.loadUsers());
         eventManager.addMultipleEvents(FileManager.loadEvents());
         ticketManager.addMultipleTickets(FileManager.loadTickets());
-        showMainMenu();
+        // threadPracticeMethod();
+        threadWithExecutors();
+        // showMainMenu();  //Commented for thread practice
+    }
+
+    public static void threadPracticeMethod() {
+        final UserViewModel userViewModel1 = new UserViewModel(userManager, userViews, eventManager, ticketManager, new User("Temp", "qq", false));
+        
+        new Thread(() -> {
+            userViewModel1.showBookingOptionControl(2, 20, new User("User1", "User1", false));
+        }).start();
+
+        new Thread(() -> {
+            userViewModel1.showBookingOptionControl(2, 50, new User("User2", "User2", false));
+        }).start();
+        
+    }
+
+    public static void threadWithExecutors() {
+        final UserViewModel userViewModel1 = new UserViewModel(userManager, userViews, eventManager, ticketManager, new User("Temp", "qq", false));        
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        Runnable task1 = () -> userViewModel1.showBookingOptionControl(2, 20, new User("User1", "User1", false));
+        Runnable task2 = () -> userViewModel1.showBookingOptionControl(2, 50, new User("User2", "User2", false));
+
+        executor.submit(task1);
+        executor.submit(task2);
+        executor.shutdown();
     }
     
     public static void showMainMenu() {

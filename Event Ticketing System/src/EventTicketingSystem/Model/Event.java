@@ -66,7 +66,7 @@ public class Event {
         return this.totalTickets;
     }
 
-    public int getQuantity() {
+    public synchronized int getQuantity() {
         return this.ticketsAvailable;
     }
 
@@ -102,7 +102,7 @@ public class Event {
         this.status = status;
     }
 
-    public void setEventQuantity(int quantity) {
+    public synchronized void setEventQuantity(int quantity) {
         this.ticketsAvailable = quantity;
     }
 

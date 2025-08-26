@@ -35,7 +35,7 @@ public class UserViews extends EventBaseViews{
 
     public int getQuantity(int quantity,boolean repeated) {
         if (repeated) {
-            return InputHelper.getInt("Entered quantity is more than available tickets\nPlease re-enter under"+quantity+": ");
+            return InputHelper.getInt("Entered quantity is more than available tickets\nPlease re-enter under "+quantity+": ");
         } else {
             return InputHelper.getInt("Enter quantity you want to buy tickets for under "+quantity+": ");
         }

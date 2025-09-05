@@ -2,11 +2,6 @@ package EventTicketingSystem.Model;
 
 import java.util.*;
 
-import EventTicketingSystem.Model.Ticket;
-import EventTicketingSystem.Model.User;
-import EventTicketingSystem.Model.UserManager;
-import EventTicketingSystem.Model.EventManager;
-
 public class TicketManager {
     UserManager userManager;
     EventManager eventManager;
@@ -73,7 +68,13 @@ public class TicketManager {
     }
 
     public void setAutoIdForTickets(User user) {
-        Ticket.setAutoId(getAllTicketsOfUser(user).get(getAllTicketsOfUser(user).size()-1).getTicketId()+1);
+        int userTicketCount = getAllTicketsOfUser(user).size();
+        if (userTicketCount > 0) {
+            int lastTicketId = getAllTicketsOfUser(user).get(userTicketCount - 1).getTicketId();
+            Ticket.setAutoId(lastTicketId+1);
+        } else {
+            Ticket.setAutoId(1);
+        }
         return;
     }
     

@@ -68,9 +68,9 @@ public class UserManager {
 
     //Admin related management
 
-    // public void createDefaultAdmin() {
-    //     addNewUser(new Admin("Admin", "0000", true));        
-    // }
+    public void createDefaultAdmin() {
+        addNewUser(new Admin("Admin", "0000", true));        
+    }
 
     public void deleteUser(User user) {
         this.users.remove(user);

@@ -13,8 +13,6 @@ import EventTicketingSystem.Model.Event;
 import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.Ticket;
 import EventTicketingSystem.Model.Event.EventStatus;
-import EventTicketingSystem.Model.UserManager;
-import EventTicketingSystem.Model.EventManager;
 
 public class FileManager {
 

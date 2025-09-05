@@ -7,7 +7,7 @@ import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.UserManager;
 import EventTicketingSystem.Model.EventManager;
 import EventTicketingSystem.Model.TicketManager;
-import EventTicketingSystem.Helpers.FileManager;
+import EventTicketingSystem.Helpers.DatabaseManager;;
 
 public class MainViewModel {
     private static MainView mainView = new MainView();    
@@ -18,11 +18,11 @@ public class MainViewModel {
     private static final TicketManager ticketManager = new TicketManager(userManager, eventManager);
 
     public static void start() {
-        // userManager.createDefaultAdmin(); //Uncomment to seed a default admin from UserManager file
-        // eventManager.seedData(); //Uncomment to seed temp list of readymade events from EventManager file
-        userManager.addMultipleUsers(FileManager.loadUsers());
-        eventManager.addMultipleEvents(FileManager.loadEvents());
-        ticketManager.addMultipleTickets(FileManager.loadTickets());
+        // userManager.createDefaultAdmin(); //Uncomment only first run to seed a default admin from UserManager file
+        // eventManager.seedData(); //Uncomment only first run to seed temp list of readymade events from EventManager file
+        userManager.addMultipleUsers(DatabaseManager.loadUsers());
+        eventManager.addMultipleEvents(DatabaseManager.loadEvents());
+        ticketManager.addMultipleTickets(DatabaseManager.loadTickets());
         showMainMenu();
     }
     
@@ -38,9 +38,9 @@ public class MainViewModel {
                     break;
                     
                 case 3:
-                    FileManager.saveEvents(eventManager.getAllEvents());
-                    FileManager.saveUsers(userManager.getAllUsers());
-                    FileManager.saveTickets(ticketManager.getAllTickets());
+                    DatabaseManager.saveEvents(eventManager.getAllEvents());
+                    DatabaseManager.saveUsers(userManager.getAllUsers());
+                    DatabaseManager.saveTickets(ticketManager.getAllTickets());
                     return;
             }
         }

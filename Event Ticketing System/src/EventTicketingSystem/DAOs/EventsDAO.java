@@ -1,7 +1,6 @@
 package EventTicketingSystem.DAOs;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,14 +9,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import EventTicketingSystem.Helpers.DatabaseManager;
 import EventTicketingSystem.Model.Event;
 import EventTicketingSystem.Model.Event.EventStatus;
 
 public class EventsDAO {
         
-    private static final String BASE_URL = "jdbc:postgresql://localhost:5432/eventmanagementsystem";
-    private static final String PASSWORD = "1234";
-    private static final String USER = "postgres";
+    private final Connection con = DatabaseManager.getInstance().getConnection();
     
     private static final String EVENT_TABLE = "events";
 
@@ -27,11 +25,10 @@ public class EventsDAO {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     //Event event methods
-    public static void save(List<Event> events) {
+    public void save(List<Event> events) {
         String statement = "insert into events (id, name, venue, date, price, totalTickets, quantity, status) values (?, ?, ?, ?, ?, ?, ?, ?)";
         
-        try (Connection con = DriverManager.getConnection(BASE_URL, USER, PASSWORD);
-            PreparedStatement st = con.prepareStatement(statement);
+        try (PreparedStatement st = con.prepareStatement(statement);
             Statement stNew = con.createStatement();) {        
 
             stNew.executeUpdate(TRUNCATE_STATEMENT+EVENT_TABLE);
@@ -54,11 +51,10 @@ public class EventsDAO {
         }
     } 
 
-    public static List<Event> load() {
+    public List<Event> load() {
         List<Event> events = new ArrayList<>();
 
-        try (Connection con = DriverManager.getConnection(BASE_URL, USER, PASSWORD);
-        Statement st = con.createStatement();) {
+        try (Statement st = con.createStatement();) {
 
             ResultSet rs = st.executeQuery(SELECT_STATEMENT+EVENT_TABLE);
 

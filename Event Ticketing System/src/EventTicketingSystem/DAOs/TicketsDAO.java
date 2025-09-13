@@ -1,19 +1,17 @@
 package EventTicketingSystem.DAOs;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import EventTicketingSystem.Helpers.DatabaseManager;
 import EventTicketingSystem.Model.Ticket;
 
 public class TicketsDAO {
-    private static final String BASE_URL = "jdbc:postgresql://localhost:5432/eventmanagementsystem";
-    private static final String PASSWORD = "1234";
-    private static final String USER = "postgres";
+    private final Connection con = DatabaseManager.getInstance().getConnection();
     
     private static final String TICKET_TABLE = "tickets";
 
@@ -22,11 +20,10 @@ public class TicketsDAO {
         
     //Tickets Related Storage 
 
-    public static void save(List<Ticket> tickets) {
+    public void save(List<Ticket> tickets) {
         String statement = "insert into tickets (id, username, relatedEventId, bookedQuantity) values (?, ?, ?, ?)";
 
-        try (Connection con = DriverManager.getConnection(BASE_URL, USER, PASSWORD);
-        PreparedStatement st = con.prepareStatement(statement);
+        try (PreparedStatement st = con.prepareStatement(statement);
         Statement stNew = con.createStatement();) {            
             stNew.executeUpdate(TRUNCATE_STATEMENT+TICKET_TABLE);
 
@@ -43,11 +40,10 @@ public class TicketsDAO {
         }
     }
 
-    public static List<String[]> load() {
+    public List<String[]> load() {
         List<String[]> tickets = new ArrayList<>();
 
-        try (Connection con = DriverManager.getConnection(BASE_URL, USER, PASSWORD);
-        Statement st = con.createStatement();) {
+        try (Statement st = con.createStatement();) {
 
             ResultSet rs = st.executeQuery(SELECT_STATEMENT+TICKET_TABLE);
 

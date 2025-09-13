@@ -1,0 +1,88 @@
+package EventTicketingSystem.DAOs;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import EventTicketingSystem.Model.Event;
+import EventTicketingSystem.Model.Event.EventStatus;
+
+public class EventsDAO {
+        
+    private static final String BASE_URL = "jdbc:postgresql://localhost:5432/eventmanagementsystem";
+    private static final String PASSWORD = "1234";
+    private static final String USER = "postgres";
+    
+    private static final String EVENT_TABLE = "events";
+
+    private static String SELECT_STATEMENT = "select * from ";
+    private static String TRUNCATE_STATEMENT = "truncate table ";
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    //Event event methods
+    public static void save(List<Event> events) {
+        String statement = "insert into events (id, name, venue, date, price, totalTickets, quantity, status) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try (Connection con = DriverManager.getConnection(BASE_URL, USER, PASSWORD);
+            PreparedStatement st = con.prepareStatement(statement);
+            Statement stNew = con.createStatement();) {        
+
+            stNew.executeUpdate(TRUNCATE_STATEMENT+EVENT_TABLE);
+
+            for (Event event: events) {
+                st.setString(1, String.valueOf(event.getEventId()));
+                st.setString(2, event.getEventName());
+                st.setString(3, event.getVenue());
+                st.setString(4, event.getDate().format(dateTimeFormatter));                
+                st.setString(5, String.valueOf(event.getPrice()));
+                st.setString(6, String.valueOf(event.getTotalTickets()));
+                st.setString(7, String.valueOf(event.getQuantity()));
+                st.setString(8, event.getStatus().toString());
+
+                st.executeUpdate();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    } 
+
+    public static List<Event> load() {
+        List<Event> events = new ArrayList<>();
+
+        try (Connection con = DriverManager.getConnection(BASE_URL, USER, PASSWORD);
+        Statement st = con.createStatement();) {
+
+            ResultSet rs = st.executeQuery(SELECT_STATEMENT+EVENT_TABLE);
+
+            while(rs.next()) {
+                    int id = Integer.parseInt(rs.getString(1));
+                    String name = rs.getString(2);
+                    String venue = rs.getString(3);
+                    LocalDateTime date = LocalDateTime.parse(rs.getString(4), dateTimeFormatter);
+                    int price = Integer.parseInt(rs.getString(5));
+                    int totalTickets = Integer.parseInt(rs.getString(6));
+                    int totalAvailableTickets = Integer.parseInt(rs.getString(7));
+                    EventStatus status;
+                    try {
+                        status = EventStatus.valueOf(rs.getString(8));
+                    } catch (IllegalArgumentException e) {
+                        status = EventStatus.UPCOMING;
+                    }
+
+                events.add(new Event(id, name, venue, date, price, totalTickets, totalAvailableTickets, status));
+                }
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            return new ArrayList<Event>(events);
+    }
+}

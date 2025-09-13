@@ -22,7 +22,7 @@ public class TicketsDAO {
         
     //Tickets Related Storage 
 
-    public static void saveTickets(List<Ticket> tickets) {
+    public static void save(List<Ticket> tickets) {
         String statement = "insert into tickets (id, username, relatedEventId, bookedQuantity) values (?, ?, ?, ?)";
 
         try (Connection con = DriverManager.getConnection(BASE_URL, USER, PASSWORD);
@@ -43,7 +43,7 @@ public class TicketsDAO {
         }
     }
 
-    public static List<String[]> loadTickets() {
+    public static List<String[]> load() {
         List<String[]> tickets = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(BASE_URL, USER, PASSWORD);

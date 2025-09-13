@@ -36,11 +36,11 @@ public class DatabaseManager {
     //Tickets Related Storage 
 
     public static void saveTickets(List<Ticket> tickets) {
-        TicketsDAO.saveTickets(tickets);
+        TicketsDAO.save(tickets);
         return;
     }
 
     public static List<String[]> loadTickets() {
-        return TicketsDAO.loadTickets();       
+        return TicketsDAO.load();       
     }
 }

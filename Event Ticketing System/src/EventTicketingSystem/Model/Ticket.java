@@ -61,6 +61,10 @@ public class Ticket {
         return this.event.getEventName();
     }
 
+    public Event getRelatedEvent() {
+        return this.event;
+    }
+
     //setters
 
     public static void setAutoId(int id) {

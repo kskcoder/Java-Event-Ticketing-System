@@ -96,6 +96,7 @@ public class UserManager {
     public void cancelTicketOfUser(User user, Ticket ticket) {
         if (user != null) {
             user.tickets.remove(ticket);
+            ticket.getRelatedEvent().removeObserver(user);
         }
         return;
     }

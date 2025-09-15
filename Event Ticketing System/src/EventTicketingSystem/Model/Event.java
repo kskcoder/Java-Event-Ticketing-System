@@ -1,9 +1,13 @@
 package EventTicketingSystem.Model;
 
+import java.util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Event {
+import EventTicketingSystem.Helpers.HelperInterface.Observers;
+import EventTicketingSystem.Helpers.HelperInterface.Subject;
+
+public class Event implements Subject{
     protected int id;
     private static int idCounter = 1;
     protected String name;    
@@ -15,6 +19,8 @@ public class Event {
     protected EventStatus status;
 
     private static DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    private List<Observers> observers = new ArrayList<Observers>();
 
     //Constructor for storing runtime events
     public Event() {}
@@ -101,6 +107,7 @@ public class Event {
     }
 
     public void setEventStatus(EventStatus status) {
+        this.notifyObservers("Event status changed from "+this.status.toString()+" to "+status);
         this.status = status;
     }
 
@@ -145,5 +152,22 @@ public class Event {
 
     public enum EventStatus {
         UPCOMING, CANCELLED, COMPLETED, POSTPONED
+    }
+
+    @Override
+    public void addObserver(Observers o) {
+        this.observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observers o) {
+        this.observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers(String message) {
+        for (Observers o: this.observers) {
+            o.update(message);
+        }
     }
 }

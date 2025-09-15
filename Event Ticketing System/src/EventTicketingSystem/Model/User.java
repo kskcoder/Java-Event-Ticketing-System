@@ -2,7 +2,9 @@ package EventTicketingSystem.Model;
 
 import java.util.*;
 
-public class User {
+import EventTicketingSystem.Helpers.HelperInterface.Observers;
+
+public class User implements Observers{
     protected String username;
     protected String password;
     protected boolean isAdmin;
@@ -40,5 +42,12 @@ public class User {
     public String toString() {
         return "Username: "+this.username
                 +"\nIs Admin: "+this.isAdmin();
+    }
+
+    @Override
+    public void update(String message) {
+        System.out.println();
+        System.out.println(username +" received notification: "+ message);
+        System.out.println();
     }
 }

@@ -61,6 +61,7 @@ public class TicketManager {
 
             if (user != null && event != null) {
                 userManager.attachTicketToUser(newTicket, user);
+                event.addObserver(user);
                 addTicketToList(user, newTicket);
             }
         }

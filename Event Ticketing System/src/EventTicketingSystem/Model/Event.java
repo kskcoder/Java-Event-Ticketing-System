@@ -17,6 +17,8 @@ public class Event {
     private static DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     //Constructor for storing runtime events
+    public Event() {}
+
     public Event(String name, String venue, LocalDateTime date, int price, int totalTickets, int ticketsAvailable, EventStatus status) {
         this.id = idCounter++;
         this.name = name;

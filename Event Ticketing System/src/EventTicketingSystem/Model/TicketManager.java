@@ -57,7 +57,7 @@ public class TicketManager {
             Event event = eventManager.getEventById( Integer.parseInt(ticket[2]));
             int quantity = Integer.parseInt(ticket[3]);
 
-            Ticket newTicket = new Ticket(id, user, event, quantity);
+            Ticket newTicket = TicketFactory.createTicketWithId(id, user, event, quantity);
 
             if (user != null && event != null) {
                 userManager.attachTicketToUser(newTicket, user);

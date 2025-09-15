@@ -44,11 +44,11 @@ public class UserManager {
     }
 
     public List<User> getOnlyAdmins() {
-        return new ArrayList<User>(this.users.stream().filter(user -> user.isAdmin() == true).collect(Collectors.toList()));
+        return new ArrayList<User>(this.users.stream().filter(user -> user.isAdmin()).collect(Collectors.toList()));
     }
 
     public List<User> getOnlyUsers() {
-        return new ArrayList<User>(this.users.stream().filter(user -> user.isAdmin() == false).collect(Collectors.toList()));
+        return new ArrayList<User>(this.users.stream().filter(user -> !user.isAdmin()).collect(Collectors.toList()));
     }
 
     public boolean isUsernameTaken(String username) {

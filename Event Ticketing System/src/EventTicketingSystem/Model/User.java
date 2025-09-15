@@ -8,6 +8,8 @@ public class User {
     protected boolean isAdmin;
     protected List<Ticket> tickets = new ArrayList<Ticket>();
 
+    public User() {}
+
     public User(String username, String password, boolean isAdmin) {
         this.username = username;
         this.password = password;

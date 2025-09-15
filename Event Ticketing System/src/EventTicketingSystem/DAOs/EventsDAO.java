@@ -11,6 +11,7 @@ import java.util.List;
 
 import EventTicketingSystem.Helpers.DatabaseManager;
 import EventTicketingSystem.Model.Event;
+import EventTicketingSystem.Model.EventFactory;
 import EventTicketingSystem.Model.Event.EventStatus;
 
 public class EventsDAO {
@@ -73,7 +74,7 @@ public class EventsDAO {
                         status = EventStatus.UPCOMING;
                     }
 
-                events.add(new Event(id, name, venue, date, price, totalTickets, totalAvailableTickets, status));
+                events.add(EventFactory.createEventWithId(id, name, venue, date, price, totalTickets, totalAvailableTickets, status));
                 }
 
             } catch (Exception e) {

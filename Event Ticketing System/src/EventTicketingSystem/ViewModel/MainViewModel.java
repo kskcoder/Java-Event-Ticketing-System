@@ -4,6 +4,7 @@ import EventTicketingSystem.View.MainView;
 import EventTicketingSystem.View.UserViews;
 import EventTicketingSystem.View.LoginAndSignUpView;
 import EventTicketingSystem.Model.User;
+import EventTicketingSystem.Model.UserFactory;
 import EventTicketingSystem.Model.UserManager;
 import EventTicketingSystem.Model.EventManager;
 import EventTicketingSystem.Model.TicketManager;
@@ -106,7 +107,7 @@ public class MainViewModel {
 
         if (!isUsernameTaken) {
             password = loginAndSignUpView.acceptPassword();
-            userManager.addNewUser(new User(username, password, isAdmin));               
+            userManager.addNewUser(UserFactory.createUser(username, password, isAdmin));               
             loginAndSignUpView.userSuccessfulMessage(false);                 
         }        
         return;

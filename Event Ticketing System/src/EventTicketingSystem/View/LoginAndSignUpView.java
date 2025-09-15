@@ -3,6 +3,7 @@ package EventTicketingSystem.View;
 import java.util.*;
 import EventTicketingSystem.Helpers.InputHelper;
 import EventTicketingSystem.Model.User;
+import EventTicketingSystem.Model.UserFactory;
 
 public class LoginAndSignUpView {
     Scanner sc = new Scanner(System.in);
@@ -28,7 +29,7 @@ public class LoginAndSignUpView {
                 System.out.println("Password cannot be blank! Please re-enter password: ");
                 password = InputHelper.getNonEmptyString("Password: ");
             } else {
-                return new User(username, password, false);
+                return UserFactory.createUser(username, password, false);
             }
         }
     }

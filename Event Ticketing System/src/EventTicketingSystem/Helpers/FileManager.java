@@ -10,7 +10,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
 import EventTicketingSystem.Model.Event;
+import EventTicketingSystem.Model.EventFactory;
 import EventTicketingSystem.Model.User;
+import EventTicketingSystem.Model.UserFactory;
 import EventTicketingSystem.Model.Ticket;
 import EventTicketingSystem.Model.Event.EventStatus;
 
@@ -66,7 +68,7 @@ public class FileManager {
                     status = EventStatus.UPCOMING;
                 }
 
-                events.add(new Event(id, name, venue, date, price, totalTickets, totalAvailableTickets, status));
+                events.add(EventFactory.createEventWithId(id, name, venue, date, price, totalTickets, totalAvailableTickets, status));
             }
         } catch (IOException e) {
             System.out.println("Error reading from the file "+e.getMessage());
@@ -107,7 +109,7 @@ public class FileManager {
                 String password = str[1];
                 boolean isAdmin = str[2].equals("true");
 
-                users.add(new User(username, password, isAdmin));
+                users.add(UserFactory.createUser(username, password, isAdmin));
             }
         } catch (IOException e) {
             System.out.println("Error reading from file "+e.getMessage());

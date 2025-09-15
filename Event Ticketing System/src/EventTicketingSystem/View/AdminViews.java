@@ -8,6 +8,7 @@ import EventTicketingSystem.Helpers.InputHelper;
 import EventTicketingSystem.Model.Event;
 import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.Event.EventStatus;
+import EventTicketingSystem.Model.EventFactory;
 
 public class AdminViews extends EventBaseViews{
 
@@ -129,7 +130,7 @@ public class AdminViews extends EventBaseViews{
             }
         }
 
-        return new Event(eventName, eventVenue, dateTime, setEventPrice, eventTotalTickets, eventTotalTicketsAvailable, eventStatus);
+        return EventFactory.createEvent(eventName, eventVenue, dateTime, setEventPrice, eventTotalTickets, eventTotalTicketsAvailable, eventStatus);
     }
 
     public void eventAddedSuccessfullyMessage() {

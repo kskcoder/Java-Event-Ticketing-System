@@ -11,6 +11,8 @@ public class Ticket {
 
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+    public Ticket() {}
+
     public Ticket(User user, Event event, int quantity) {
         this.ticketId = ticketCounter++;
         this.user = user;

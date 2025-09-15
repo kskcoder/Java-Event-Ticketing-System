@@ -7,6 +7,7 @@ import EventTicketingSystem.View.UserViews;
 import EventTicketingSystem.Model.User;
 import EventTicketingSystem.Model.Event;
 import EventTicketingSystem.Model.Ticket;
+import EventTicketingSystem.Model.TicketFactory;
 import EventTicketingSystem.Model.UserManager;
 import EventTicketingSystem.Model.EventManager;
 import EventTicketingSystem.Model.TicketManager;
@@ -135,8 +136,8 @@ public class UserViewModel {
             }
             
             eventManager.updateBookedEvent(Id, quantity, false);
-            ticketManager.addTicketToList(currentLoggedInUser, new Ticket(currentLoggedInUser, event, quantity));
-            userManager.attachTicketToUser(new Ticket(currentLoggedInUser, event, quantity), currentLoggedInUser);
+            ticketManager.addTicketToList(currentLoggedInUser, TicketFactory.createTicket(currentLoggedInUser, event, quantity));
+            userManager.attachTicketToUser(TicketFactory.createTicket(currentLoggedInUser, event, quantity), currentLoggedInUser);
             userViews.eventBookedSuccessfullyMessage();            
         }
         return;

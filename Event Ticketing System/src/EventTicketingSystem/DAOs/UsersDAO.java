@@ -9,6 +9,7 @@ import java.util.List;
 
 import EventTicketingSystem.Helpers.DatabaseManager;
 import EventTicketingSystem.Model.User;
+import EventTicketingSystem.Model.UserFactory;
 
 public class UsersDAO {
     private final Connection con = DatabaseManager.getInstance().getConnection();
@@ -49,7 +50,7 @@ public class UsersDAO {
                 String username = rs.getString(1);
                 String password = rs.getString(2);
                 Boolean isAdmin = rs.getString(3).equals("true");
-                users.add(new User(username, password, isAdmin));
+                users.add(UserFactory.createUser(username, password, isAdmin));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

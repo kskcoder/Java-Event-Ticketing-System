@@ -24,14 +24,14 @@ public class MainViewModel {
         userManager.addMultipleUsers(DatabaseManager.loadUsers());
         eventManager.addMultipleEvents(DatabaseManager.loadEvents());
         ticketManager.addMultipleTickets(DatabaseManager.loadTickets());
-        showMainMenu();
+        // showMainMenu();
     }
     
     public static void showMainMenu() {
         while(true) {
             switch (mainView.showMainMenu()) {
                 case 1:
-                    handleLogin();
+                    // handleLogin();
                     break;
     
                 case 2:
@@ -47,11 +47,11 @@ public class MainViewModel {
         }
     }
 
-    public static void handleLogin() {
-        User existingUser = loginAndSignUpView.acceptExistingUserDetails();
+    public static boolean handleLogin(String username, String password) {
+        // User existingUser = loginAndSignUpView.acceptExistingUserDetails();
 
-        String username = existingUser.getUserName();
-        String password = existingUser.getPassword();
+        // String username = existingUser.getUserName();
+        // String password = existingUser.getPassword();
 
         boolean userExists = userManager.isUsernameTaken(username);
 
@@ -61,12 +61,13 @@ public class MainViewModel {
             isAuthenticated = userManager.authenticateUser(username, password);
         } else {
             loginAndSignUpView.userDoesNotExist();
-            return;
+            return false;
         }
 
         if (isAuthenticated == 1) {
             loginAndSignUpView.userSuccessfulMessage(true);
-            showAfterLoginViews();
+            return true;
+            // showAfterLoginViews();
         } else if (isAuthenticated == -1){
             int attempts = 3;
             while (isAuthenticated != 1 && attempts > 0) {
@@ -84,7 +85,7 @@ public class MainViewModel {
                 }
             }            
         }
-        return;
+        return true;
     }
 
     public static void handleSignup() {

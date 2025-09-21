@@ -1,8 +1,13 @@
 {
-    "java.project.sourcePaths": ["src"],
+    "java.project.sourcePaths": [
+        "src",
+        "test"
+    ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar"
+        "/Users/tejaskashid/tempDelete/Java/EventTicketingSystem/Event Ticketing System/lib/junit-jupiter-api-6.0.0-RC3.jar",
+        "/Users/tejaskashid/tempDelete/Java/EventTicketingSystem/Event Ticketing System/lib/postgresql-42.7.7.jar",
+        "test-lib/**/*.jar"
     ],
     "sqltools.connections": [
         {
